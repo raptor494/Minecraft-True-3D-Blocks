@@ -1,5 +1,5 @@
 {
-    "parent": "block/ladder",
+    "parent": "block/vanilla_ladder",
     "textures": {
         "particle": "quark:block/iron_ladder",
         "texture": "quark:block/iron_ladder"
