@@ -1,0 +1,67 @@
+{
+    "credit": "Made with Blockbench",
+    "parent": "minecraft:block/orientable_vertical",
+    "textures": {
+        "side": "block/furnace_top",
+        "particle": "block/dropper_front_vertical",
+        "front": "block/dropper_front_vertical"
+    },
+    "elements": [
+        {
+            "from": [0, 15, 0],
+            "to": [16, 16, 6],
+            "faces": {
+                "north": { "texture": "#side", "uv": [0, 0, 16, 1], "cullface": "north" },
+                "south": { "texture": "#front", "uv": [0, 5, 16, 6], "cullface": "up" },
+                "east" : { "texture": "#side", "uv": [10, 0, 16, 1], "cullface": "east" },
+                "west" : { "texture": "#side", "uv": [0, 0, 6, 1], "cullface": "west" },
+                "up"   : { "texture": "#front", "uv": [0, 0, 16, 6], "cullface": "up" }
+            },
+            "name": "dropper_front_vertical_0"
+        },
+        {
+            "from": [0, 15, 6],
+            "to": [5, 16, 16],
+            "faces": {
+                "south": { "texture": "#side", "uv": [0, 0, 5, 1], "cullface": "south" },
+                "east" : { "texture": "#front", "uv": [4, 6, 5, 16], "cullface": "up", "rotation": 90 },
+                "west" : { "texture": "#side", "uv": [6, 0, 16, 1], "cullface": "west" },
+                "up"   : { "texture": "#front", "uv": [0, 6, 5, 16], "cullface": "up" }
+            },
+            "name": "dropper_front_vertical_1"
+        },
+        {
+            "from": [11, 15, 6],
+            "to": [16, 16, 16],
+            "faces": {
+                "south": { "texture": "#side", "uv": [11, 0, 16, 1], "cullface": "south" },
+                "east" : { "texture": "#side", "uv": [0, 0, 10, 1], "cullface": "east" },
+                "west" : { "texture": "#front", "uv": [11, 6, 12, 16], "cullface": "up", "rotation": 270 },
+                "up"   : { "texture": "#front", "uv": [11, 6, 16, 16], "cullface": "up" }
+            },
+            "name": "dropper_front_vertical_2"
+        },
+        {
+            "from": [5, 15, 10],
+            "to": [11, 16, 16],
+            "faces": {
+                "north": { "texture": "#front", "uv": [11, 10, 5, 11], "cullface": "up" },
+                "south": { "texture": "#side", "uv": [5, 0, 11, 1], "cullface": "south" },
+                "up"   : { "texture": "#front", "uv": [5, 10, 11, 16], "cullface": "up" }
+            },
+            "name": "dropper_front_vertical_3"
+        },
+        {
+            "from": [0, 0, 0],
+            "to": [16, 15, 16],
+            "faces": {
+                "north": { "texture": "#side", "uv": [0, 1, 16, 16], "cullface": "north" },
+                "south": { "texture": "#side", "uv": [0, 1, 16, 16], "cullface": "south" },
+                "east" : { "texture": "#side", "uv": [0, 1, 16, 16], "cullface": "east" },
+                "west" : { "texture": "#side", "uv": [0, 1, 16, 16], "cullface": "west" },
+                "up"   : { "texture": "#front", "uv": [0, 0, 16, 16], "cullface": "up" },
+                "down" : { "texture": "#side", "uv": [0, 0, 16, 16], "cullface": "down" }
+            }
+        }
+    ]
+}

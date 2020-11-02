@@ -1,0 +1,36 @@
+{
+    "multipart": [
+        {
+            "when": { "facing": "north" },
+            "apply": { "model": "block/jack_o_lantern" }
+        },
+        {
+            "when": { "facing": "south" },
+            "apply": { "model": "block/jack_o_lantern", "y": 180 }
+        },
+        {
+            "when": { "facing": "west" },
+            "apply": { "model": "block/jack_o_lantern", "y": 270 }
+        },
+        {
+            "when": { "facing": "east" },
+            "apply": { "model": "block/jack_o_lantern", "y": 90 }
+        },
+        {
+            "when": { "facing": "north" },
+            "apply": { "model": "block/jack_o_lantern_torch" }
+        },
+        {
+            "when": { "facing": "south" },
+            "apply": { "model": "block/jack_o_lantern_torch", "y": 180 }
+        },
+        {
+            "when": { "facing": "west" },
+            "apply": { "model": "block/jack_o_lantern_torch", "y": 270 }
+        },
+        {
+            "when": { "facing": "east" },
+            "apply": { "model": "block/jack_o_lantern_torch", "y": 90 }
+        }
+    ]
+}

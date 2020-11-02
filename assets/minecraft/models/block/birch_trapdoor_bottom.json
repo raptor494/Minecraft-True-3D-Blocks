@@ -1,0 +1,8 @@
+{
+    "credit": "Made with Blockbench",
+    "parent": "block/template_trapdoor_bottom",
+    "textures": {
+        "texture": "block/birch_trapdoor",
+        "sides": "block/birch_trapdoor_sides"
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "parent": "block/carved_pumpkin",
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "block/pumpkin_side",
+        "side": "block/pumpkin_side",
+        "face": "block/carved_pumpkin",
+        "top": "block/pumpkin_top",
+        "inside": "block/jack_o_lantern_inside"
+    }
+}

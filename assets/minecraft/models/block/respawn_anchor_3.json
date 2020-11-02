@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:block/respawn_anchor_1",
+    "textures": {
+        "side": "minecraft:block/respawn_anchor_side3"
+    }
+}

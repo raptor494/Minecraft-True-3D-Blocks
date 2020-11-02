@@ -1,0 +1,8 @@
+{
+    "credit": "Made with Blockbench",
+    "parent": "block/template_trapdoor_open",
+    "textures": {
+        "texture": "block/dark_oak_trapdoor",
+        "sides": "block/dark_oak_trapdoor_sides"
+    }
+}

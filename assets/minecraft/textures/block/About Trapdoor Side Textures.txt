@@ -1,0 +1,5 @@
+Trapdoor side textures in this pack are organized as follows:
+
+1. The bottom 16x3 box is the texture on the hinge side.
+2. The top 16x3 box is the texture on the 3 non-front sides.
+3. The 14x3 box below the top box is for the interior sides.

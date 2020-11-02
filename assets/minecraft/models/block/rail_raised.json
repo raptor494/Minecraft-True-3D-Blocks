@@ -1,0 +1,6 @@
+{
+    "parent": "block/template_rail_raised",
+    "textures": {
+        "rail": "block/rail"
+    }
+}

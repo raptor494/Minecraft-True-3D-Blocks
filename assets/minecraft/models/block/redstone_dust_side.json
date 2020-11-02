@@ -1,0 +1,25 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "block/redstone_dust_dot",
+        "overlay": "block/redstone_dust_overlay"
+    },
+    "elements": [
+        {
+            "from": [0, 0.5, 0],
+            "to": [16, 0.5, 8],
+            "faces": {
+                "up": { "texture": "#line", "uv": [0, 0, 16, 8], "tintindex": 0 }
+            },
+            "shade": false
+        },
+        {
+            "from": [0, 0.5, 0],
+            "to": [16, 0.5, 8],
+            "faces": {
+                "up": { "texture": "#overlay", "uv": [0, 0, 16, 8] }
+            },
+            "shade": false
+        }
+    ]
+}

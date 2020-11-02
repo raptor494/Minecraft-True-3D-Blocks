@@ -1,0 +1,6 @@
+{
+    "parent": "block/furnace",
+    "textures": {
+        "front": "block/furnace_front_on"
+    }
+}
