@@ -1,0 +1,6 @@
+{
+    "parent": "block/vanilla_ladder",
+    "textures": {
+        "texture": "#ladder"
+    }
+}
