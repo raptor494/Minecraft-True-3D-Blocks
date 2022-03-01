@@ -4,7 +4,7 @@
     "textures": {
         "door": "block/dark_oak_door_top",
         "particle": "block/dark_oak_door_top",
-        "sides": "block/dark_oak_door_top_sides"
+        "sides": "true3d:block/door_sides/minecraft/dark_oak_top"
     },
     "elements": [
         {

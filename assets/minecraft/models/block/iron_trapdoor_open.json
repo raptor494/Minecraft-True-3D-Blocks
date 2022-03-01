@@ -2,6 +2,6 @@
     "parent": "block/template_trapdoor_cross_open",
     "textures": {
         "face": "block/iron_trapdoor",
-        "sides": "block/iron_trapdoor_sides"
+        "sides": "true3d:block/trapdoor_sides/minecraft/iron"
     }
 }

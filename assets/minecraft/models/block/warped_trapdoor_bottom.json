@@ -4,7 +4,7 @@
     "textures": {
         "particle": "block/warped_trapdoor",
         "face": "block/warped_trapdoor",
-        "sides": "block/warped_trapdoor_sides"
+        "sides": "true3d:block/trapdoor_sides/minecraft/warped"
     },
     "elements": [
         {

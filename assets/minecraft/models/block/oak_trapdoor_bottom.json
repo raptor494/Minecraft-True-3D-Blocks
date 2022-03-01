@@ -2,6 +2,6 @@
     "parent": "block/template_trapdoor_cross_bottom",
     "textures": {
         "face": "block/oak_trapdoor",
-        "sides": "block/oak_trapdoor_sides"
+        "sides": "true3d:block/trapdoor_sides/minecraft/oak"
     }
 }

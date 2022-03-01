@@ -6,7 +6,7 @@
 		"bottom": "block/respawn_anchor_bottom",
 		"particle": "block/respawn_anchor_side2",
 		"side": "block/respawn_anchor_side2",
-		"inside": "block/respawn_anchor_inside",
+		"inside": "true3d:block/respawn_anchor_inside",
 		"portal": "block/nether_portal"
 	},
 	"elements": [

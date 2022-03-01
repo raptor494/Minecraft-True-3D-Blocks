@@ -5,7 +5,7 @@
 		"top": "block/respawn_anchor_top_off",
 		"bottom": "block/respawn_anchor_bottom",
 		"side": "block/respawn_anchor_side0",
-		"inside": "block/respawn_anchor_inside"
+		"inside": "true3d:block/respawn_anchor_inside"
 	},
 	"elements": [
 		{
