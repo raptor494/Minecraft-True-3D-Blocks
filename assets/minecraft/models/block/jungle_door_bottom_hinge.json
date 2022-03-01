@@ -4,7 +4,7 @@
 	"textures": {
 		"particle": "block/jungle_door_bottom",
 		"door": "block/jungle_door_bottom",
-		"sides": "block/jungle_door_bottom_sides"
+		"sides": "true3d:block/door_sides/minecraft/jungle_bottom"
 	},
 	"elements": [
 		{

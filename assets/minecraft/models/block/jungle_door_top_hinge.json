@@ -4,7 +4,7 @@
 	"textures": {
 		"particle": "block/jungle_door_top",
 		"door": "block/jungle_door_top",
-		"sides": "block/jungle_door_top_sides"
+		"sides": "true3d:block/door_sides/minecraft/jungle_top"
 	},
 	"elements": [
 		{
@@ -25,7 +25,7 @@
 			"from": [0, 13, 0],
 			"to": [3, 16, 11],
 			"faces": {
-				"north": {"uv": [13, 0, 16, 3], "texture": "#sides", "cullface": "north"},
+				"north": {"uv": [16, 0, 13, 3], "texture": "#sides", "cullface": "north"},
 				"east": {"uv": [5, 0, 16, 3], "texture": "#door"},
 				"south": {"uv": [5, 0, 6, 3], "texture": "#door"},
 				"west": {"uv": [5, 3, 16, 0], "rotation": 180, "texture": "#door", "cullface": "west"},
@@ -51,7 +51,7 @@
 			"from": [0, 12, 0],
 			"to": [3, 13, 6],
 			"faces": {
-				"north": {"uv": [13, 3, 16, 4], "texture": "#sides", "cullface": "north"},
+				"north": {"uv": [16, 3, 13, 4], "texture": "#sides", "cullface": "north"},
 				"east": {"uv": [10, 3, 16, 4], "texture": "#door"},
 				"south": {"uv": [13, 3, 16, 4], "texture": "#sides"},
 				"west": {"uv": [10, 4, 16, 3], "rotation": 180, "texture": "#door", "cullface": "west"},
@@ -64,7 +64,7 @@
 			"from": [0, 11, 0],
 			"to": [3, 12, 5],
 			"faces": {
-				"north": {"uv": [13, 4, 16, 5], "texture": "#sides", "cullface": "north"},
+				"north": {"uv": [16, 4, 13, 5], "texture": "#sides", "cullface": "north"},
 				"east": {"uv": [11, 4, 16, 5], "texture": "#door"},
 				"south": {"uv": [13, 4, 16, 5], "texture": "#sides"},
 				"west": {"uv": [11, 5, 16, 4], "rotation": 180, "texture": "#door", "cullface": "west"},
@@ -90,7 +90,7 @@
 			"from": [0, 0, 0],
 			"to": [3, 11, 4],
 			"faces": {
-				"north": {"uv": [13, 5, 16, 16], "texture": "#sides", "cullface": "north"},
+				"north": {"uv": [16, 5, 13, 16], "texture": "#sides", "cullface": "north"},
 				"east": {"uv": [12, 5, 16, 16], "texture": "#door"},
 				"south": {"uv": [13, 5, 16, 16], "texture": "#sides"},
 				"west": {"uv": [12, 16, 16, 5], "rotation": 180, "texture": "#door", "cullface": "west"},
