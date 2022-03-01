@@ -6,7 +6,7 @@
         "side": "block/pumpkin_side",
         "face": "block/carved_pumpkin",
         "top": "block/pumpkin_top",
-        "inside": "block/pumpkin_inside"
+        "inside": "true3d:block/pumpkin_inside"
     },
     "elements": [
         {

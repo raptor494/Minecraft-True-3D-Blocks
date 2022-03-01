@@ -4,7 +4,7 @@
     "textures": {
         "door": "block/warped_door_top",
         "particle": "block/warped_door_top",
-        "sides": "block/warped_door_top_sides"
+        "sides": "true3d:block/door_sides/minecraft/warped_top"
     },
     "elements": [
         {

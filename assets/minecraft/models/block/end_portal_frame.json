@@ -1,11 +1,11 @@
 {
     "parent": "block/block",
     "textures": {
-        "particle": "minecraft:block/end_portal_frame_side",
-        "side": "minecraft:block/end_portal_frame_side",
-        "top": "minecraft:block/end_portal_frame_top",
-        "bottom": "minecraft:block/end_stone",
-        "inside": "minecraft:block/end_portal_frame_inside"
+        "particle": "block/end_portal_frame_side",
+        "side": "block/end_portal_frame_side",
+        "top": "block/end_portal_frame_top",
+        "bottom": "block/end_stone",
+        "inside": "true3d:block/end_portal_frame_inside"
     },
     "elements": [
         {

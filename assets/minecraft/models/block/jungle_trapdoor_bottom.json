@@ -4,7 +4,7 @@
 	"textures": {
 		"particle": "block/jungle_trapdoor",
 		"face": "block/jungle_trapdoor",
-		"sides": "block/jungle_trapdoor_sides"
+		"sides": "true3d:block/trapdoor_sides/minecraft/jungle"
 	},
 	"elements": [
 		{

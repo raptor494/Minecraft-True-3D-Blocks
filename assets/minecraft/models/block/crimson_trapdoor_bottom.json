@@ -4,7 +4,7 @@
     "textures": {
         "particle": "block/crimson_trapdoor",
         "face": "block/crimson_trapdoor",
-        "sides": "block/crimson_trapdoor_sides"
+        "sides": "true3d:block/trapdoor_sides/minecraft/crimson"
     },
     "elements": [
         {

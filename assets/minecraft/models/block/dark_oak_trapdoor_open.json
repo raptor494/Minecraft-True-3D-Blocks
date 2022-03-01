@@ -3,6 +3,6 @@
     "parent": "block/template_trapdoor_open",
     "textures": {
         "texture": "block/dark_oak_trapdoor",
-        "sides": "block/dark_oak_trapdoor_sides"
+        "sides": "true3d:block/trapdoor_sides/minecraft/dark_oak"
     }
 }

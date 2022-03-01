@@ -4,7 +4,7 @@
     "textures": {
         "face": "block/acacia_trapdoor",
         "particle": "block/acacia_trapdoor",
-        "sides": "block/acacia_trapdoor_sides"
+        "sides": "true3d:block/trapdoor_sides/minecraft/acacia"
     },
     "elements": [
         {

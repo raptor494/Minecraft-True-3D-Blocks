@@ -3,7 +3,7 @@
 	"parent": "block/thin_block",
 	"textures": {
 		"sides": "block/birch_trapdoor",
-		"1_sides": "block/birch_trapdoor_sides"
+		"1_sides": "true3d:block/trapdoor_sides/minecraft/birch"
 	},
 	"elements": [
 		{

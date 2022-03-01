@@ -4,7 +4,7 @@
     "textures": {
         "particle": "block/acacia_door_top",
         "door": "block/acacia_door_top",
-        "sides": "block/acacia_door_top_sides"
+        "sides": "true3d:block/door_sides/minecraft/acacia_top"
     },
     "elements": [
         {
