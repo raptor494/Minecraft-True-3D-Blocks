@@ -1,7 +1,0 @@
-{
-    "parent": "block/oak_door_bottom",
-    "textures": {
-        "door": "biomesoplenty:block/palm_door_bottom",
-        "sides": "true3d:block/door_sides/biomesoplenty/palm_bottom"
-    }
-}
