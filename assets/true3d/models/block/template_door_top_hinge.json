@@ -4,7 +4,7 @@
     "textures": {
         "particle": "#door",
         "sides": "#door"
-        
+
     },
     "elements": [
         {
@@ -15,7 +15,7 @@
                 "south": { "texture": "#sides", "uv": [0, 0, 3, 16], "cullface": "south" },
                 "east" : { "texture": "#door", "uv": [0, 0, 16, 16] },
                 "west" : { "texture": "#door", "uv": [16, 0, 0, 16], "cullface": "west" },
-                "down" : { "texture": "#sides", "uv": [13, 0, 16, 16], "cullface": "down" }
+                "up"   : { "texture": "#sides", "uv": [13, 16, 16, 0], "cullface": "up" }
             }
         }
     ]
