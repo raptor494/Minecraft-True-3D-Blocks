@@ -1,5 +1,4 @@
 #!python
-
 def isprimitive(value):
     return value is None or isinstance(value, (str, int, float, bool))
 
@@ -194,16 +193,38 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
     return _iterencode
 
 import json, json.encoder
+from typing import Any
 json.encoder.c_make_encoder = None
 json.encoder._make_iterencode = _make_iterencode
+del _make_iterencode
 
 def dump(obj, fp, *, indent='\t', **kwargs):
-    return dump.old(obj, fp, indent=indent, **kwargs)
+    return json.dump.old(obj, fp, indent=indent, **kwargs)
 dump.old = json.dump
 json.dump = dump
+del dump
 
 def dumps(obj, *, indent='\t', **kwargs):
-    return dumps.old(obj, indent=indent, **kwargs)
+    return json.dumps.old(obj, indent=indent, **kwargs)
 dumps.old = json.dumps
 json.dumps = dumps
+del dumps
 
+import os, os.path
+
+class Namespace(dict[str, Any]):
+    def __getattr__(self, name: str):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError
+
+    def __setattr__(self, name: str, value: Any):
+        if hasattr(self, name):
+            super().__setattr__(name, value)
+        else:
+            self[name] = value
+
+wood_types = Namespace()
+wood_types.minecraft = 'oak', 'spruce', 'birch', 'jungle', 'acacia', 'dark_oak'
+wood_types.biomesoplenty = 'cherry', 'dead', 'fir', 'hellbark', 'jacaranda', 'magic', 'mahogany', 'palm', 'redwood', 'umbran', 'willow'
