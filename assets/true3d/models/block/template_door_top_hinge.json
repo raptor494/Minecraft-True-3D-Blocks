@@ -15,7 +15,7 @@
                 "south": { "texture": "#sides", "uv": [3, 0, 0, 16], "cullface": "south" },
                 "east" : { "texture": "#door", "uv": [0, 0, 16, 16] },
                 "west" : { "texture": "#door", "uv": [16, 0, 0, 16], "cullface": "west" },
-                "up"   : { "texture": "#sides", "uv": [13, 16, 16, 0], "cullface": "up" }
+                "up"   : { "texture": "#sides", "uv": [16, 16, 13, 0], "cullface": "up" }
             }
         }
     ]
