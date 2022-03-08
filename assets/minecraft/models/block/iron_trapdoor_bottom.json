@@ -1,5 +1,5 @@
 {
-    "parent": "block/template_trapdoor_cross_bottom",
+    "parent": "true3d:block/template_trapdoor_cross_bottom",
     "textures": {
         "face": "block/iron_trapdoor",
         "sides": "true3d:block/trapdoor_sides/minecraft/iron"

@@ -1,6 +1,6 @@
 {
     "credit": "Made with Blockbench",
-    "parent": "block/template_trapdoor_top",
+    "parent": "true3d:block/template_trapdoor_top",
     "textures": {
         "texture": "block/spruce_trapdoor",
         "sides": "true3d:block/trapdoor_sides/minecraft/spruce"
