@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "block/jungle_door_top",
+        "particle": "#door",
 		"door": "block/jungle_door_top",
 		"sides": "true3d:block/door_sides/minecraft/jungle_top"
 	},

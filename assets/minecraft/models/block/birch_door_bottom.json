@@ -2,7 +2,7 @@
     "credit": "Made with Blockbench",
     "ambientocclusion": false,
     "textures": {
-        "particle": "block/birch_door_bottom",
+        "particle": "#door",
         "door": "block/birch_door_bottom",
         "sides": "true3d:block/door_sides/minecraft/birch_bottom"
     },

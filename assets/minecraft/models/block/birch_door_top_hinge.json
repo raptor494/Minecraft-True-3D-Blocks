@@ -2,8 +2,8 @@
     "credit": "Made with Blockbench",
     "ambientocclusion": false,
     "textures": {
+        "particle": "#door",
         "door": "block/birch_door_top",
-        "particle": "block/birch_door_top",
         "sides": "true3d:block/door_sides/minecraft/birch_top"
     },
     "elements": [
