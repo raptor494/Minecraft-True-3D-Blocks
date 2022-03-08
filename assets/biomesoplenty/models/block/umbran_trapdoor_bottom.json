@@ -1,0 +1,7 @@
+{
+	"parent": "true3d:block/template_trapdoor_cross_bottom",
+	"textures": {
+		"face": "biomesoplenty:block/umbran_trapdoor",
+		"sides": "true3d:block/trapdoor_sides/biomesoplenty/umbran"
+	}
+}

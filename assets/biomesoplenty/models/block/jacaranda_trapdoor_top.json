@@ -1,0 +1,7 @@
+{
+	"parent": "true3d:block/template_trapdoor_cross_top",
+	"textures": {
+		"face": "biomesoplenty:block/jacaranda_trapdoor",
+		"sides": "true3d:block/trapdoor_sides/biomesoplenty/jacaranda"
+	}
+}
