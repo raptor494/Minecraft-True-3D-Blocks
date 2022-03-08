@@ -636,6 +636,7 @@ def main(argv=None):
     parser.add_argument('name', metavar='NAME', type=ResourceLocation, help='The name of the door type')
     parser.add_argument('--output', '-o', metavar='FOLDER', type=Path, default=".", help='Path to output folder (defaults to ".")')
     parser.add_argument('--direction', '-d', nargs=2, choices=typing.get_args(FindRectangleDirectionHorizontal) + typing.get_args(FindRectangleDirectionVertical))
+    parser.add_argument('-f', dest='no_prompt', action='store_true', help="Don't prompt on replace")
     group1 = parser.add_mutually_exclusive_group()
     group1.add_argument('--top', action='store_true', help='Only do the top half')
     group1.add_argument('--bottom', action='store_true', help='Only do the bottom half')
@@ -649,6 +650,7 @@ def main(argv=None):
     direction: FindRectangleDirection = args.direction or ("left-right", "top-bottom")
     do_top: bool = not args.bottom
     do_bottom: bool = not args.top
+    prompt_on_replace: bool = not args.no_prompt
 
     if not template_img_path.is_file():
         print("Error: given template image does not exist or is not a file", file=sys.stderr)
@@ -771,18 +773,22 @@ def main(argv=None):
             "sides": f"true3d:block/door_sides/{namespace}/{door_name}_top"
         }
 
-        with (output_dir_path/f'{door_name}_door_top.json').open('w') as file:
-            json.dump({
-                "ambientocclusion": False,
-                "textures": textures,
-                "elements": door_top_elements
-            }, file, default=json_default)
-        with (output_dir_path/f'{door_name}_door_top_hinge.json').open('w') as file:
-            json.dump({
-                "ambientocclusion": False,
-                "textures": textures,
-                "elements": door_top_hinge_elements
-            }, file, default=json_default)
+        p = output_dir_path/f'{door_name}_door_top.json'
+        if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
+            with p.open('w') as file:
+                json.dump({
+                    "ambientocclusion": False,
+                    "textures": textures,
+                    "elements": door_top_elements
+                }, file, default=json_default)
+        p = output_dir_path/f'{door_name}_door_top_hinge.json'
+        if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
+            with p.open('w') as file:
+                json.dump({
+                    "ambientocclusion": False,
+                    "textures": textures,
+                    "elements": door_top_hinge_elements
+                }, file, default=json_default)
 
     if do_bottom:
         textures = {
@@ -791,18 +797,22 @@ def main(argv=None):
             "sides": f"true3d:block/door_sides/{namespace}/{door_name}_bottom"
         }
 
-        with (output_dir_path/f'{door_name}_door_bottom.json').open('w') as file:
-            json.dump({
-                "ambientocclusion": False,
-                "textures": textures,
-                "elements": door_bottom_elements
-            }, file, default=json_default)
-        with (output_dir_path/f'{door_name}_door_bottom_hinge.json').open('w') as file:
-            json.dump({
-                "ambientocclusion": False,
-                "textures": textures,
-                "elements": door_bottom_hinge_elements
-            }, file, default=json_default)
+        p = output_dir_path/f'{door_name}_door_bottom.json'
+        if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
+            with p.open('w') as file:
+                json.dump({
+                    "ambientocclusion": False,
+                    "textures": textures,
+                    "elements": door_bottom_elements
+                }, file, default=json_default)
+        p = output_dir_path/f'{door_name}_door_bottom_hinge.json'
+        if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
+            with p.open('w') as file:
+                json.dump({
+                    "ambientocclusion": False,
+                    "textures": textures,
+                    "elements": door_bottom_hinge_elements
+                }, file, default=json_default)
 
 if __name__ == '__main__':
     main()
