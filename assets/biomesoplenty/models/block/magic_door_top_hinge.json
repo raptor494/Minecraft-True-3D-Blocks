@@ -1,0 +1,125 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "#door",
+		"door": "biomesoplenty:block/magic_door_top",
+		"sides": "true3d:block/door_sides/biomesoplenty/magic_top"
+	},
+	"elements": [
+		{
+			"from": [ 0.0, 13.0, 0.0 ],
+			"to": [ 3.0, 16.0, 16.0 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 13.0, 0.0, 16.0, 3.0 ],
+					"cullface": "north"
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 3.0, 0.0, 0.0, 3.0 ],
+					"cullface": "south"
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 0.0, 0.0, 16.0, 3.0 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 16.0, 0.0, 0.0, 3.0 ],
+					"cullface": "west"
+				},
+				"up": {
+					"texture": "#sides",
+					"uv": [ 16.0, 16.0, 13.0, 0.0 ],
+					"cullface": "up"
+				},
+				"down": {
+					"texture": "#sides",
+					"uv": [ 16.0, 16.0, 13.0, 0.0 ]
+				}
+			}
+		},
+		{
+			"from": [ 0.0, 0.0, 13.0 ],
+			"to": [ 3.0, 13.0, 16.0 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 3.0, 3.0, 0.0, 16.0 ],
+					"cullface": "north"
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 3.0, 3.0, 0.0, 16.0 ]
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 0.0, 3.0, 3.0, 16.0 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 3.0, 3.0, 0.0, 16.0 ],
+					"cullface": "west"
+				}
+			}
+		},
+		{
+			"from": [ 0.5, 1.0, 3.0 ],
+			"to": [ 2.5, 13.0, 13.0 ],
+			"faces": {
+				"east": {
+					"texture": "#door",
+					"uv": [ 3.0, 3.0, 13.0, 15.0 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 13.0, 3.0, 3.0, 15.0 ]
+				}
+			}
+		},
+		{
+			"from": [ 0.0, 0.0, 0.0 ],
+			"to": [ 3.0, 13.0, 3.0 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 13.0, 3.0, 16.0, 16.0 ]
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 13.0, 3.0, 16.0, 16.0 ],
+					"cullface": "south"
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 13.0, 3.0, 16.0, 16.0 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 16.0, 3.0, 13.0, 16.0 ],
+					"cullface": "west"
+				}
+			}
+		},
+		{
+			"from": [ 0.0, 0.0, 3.0 ],
+			"to": [ 3.0, 1.0, 13.0 ],
+			"faces": {
+				"east": {
+					"texture": "#door",
+					"uv": [ 3.0, 15.0, 13.0, 16.0 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 13.0, 15.0, 3.0, 16.0 ],
+					"cullface": "west"
+				},
+				"up": {
+					"texture": "#sides",
+					"uv": [ 16.0, 13.0, 13.0, 3.0 ]
+				}
+			}
+		}
+	]
+}
