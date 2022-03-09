@@ -385,22 +385,27 @@ class Element:
 
 def make_hinge_element(element: Element):
     element = element.clone()
+    element.from_.z, element.to.z = 16 - element.to.z, 16 - element.from_.z
+    if (element.south_face is None) ^ (element.north_face is None):
+        element.south_face, element.north_face = element.north_face, element.south_face
     if element.from_.z == 0 and element.north_face and element.north_face.uv and 0 <= element.north_face.uv[0] <= 3 and 0 <= element.north_face.uv[2] <= 3:
-        element.north_face.uv = (element.north_face.uv[0] + 13, element.north_face.uv[1], element.north_face.uv[2] + 13, element.north_face.uv[3])
+        element.north_face.uv = (element.north_face.uv[2] + 13, element.north_face.uv[1], element.north_face.uv[0] + 13, element.north_face.uv[3])
     if element.to.z == 16 and element.south_face and element.south_face.uv and 13 <= element.south_face.uv[0] <= 16 and 13 <= element.south_face.uv[2] <= 16:
-        element.south_face.uv = (element.south_face.uv[0] - 13, element.south_face.uv[1], element.south_face.uv[2] - 13, element.south_face.uv[3])
-    if element.north_face and element.north_face.uv:
-        element.north_face.uv = (element.north_face.uv[2], element.north_face.uv[1], element.north_face.uv[0], element.north_face.uv[3])
-    if element.south_face and element.south_face.uv:
-        element.south_face.uv = (element.south_face.uv[2], element.south_face.uv[1], element.south_face.uv[0], element.south_face.uv[3])
+        element.south_face.uv = (element.south_face.uv[2] - 13, element.south_face.uv[1], element.south_face.uv[0] - 13, element.south_face.uv[3])
+    
+    # if element.north_face and element.north_face.uv:
+    #     element.north_face.uv = (element.north_face.uv[2], element.north_face.uv[1], element.north_face.uv[0], element.north_face.uv[3])
+    # if element.south_face and element.south_face.uv:
+    #     element.south_face.uv = (element.south_face.uv[2], element.south_face.uv[1], element.south_face.uv[0], element.south_face.uv[3])
     if element.up_face and element.up_face.uv:
         element.up_face.uv = (element.up_face.uv[2], element.up_face.uv[3], element.up_face.uv[0], element.up_face.uv[1])
     if element.down_face and element.down_face.uv:
         element.down_face.uv = (element.down_face.uv[2], element.down_face.uv[3], element.down_face.uv[0], element.down_face.uv[1])
     assert element.east_face and element.west_face and element.east_face.texture == element.west_face.texture
     assert element.east_face.uv and element.west_face.uv
-    element.east_face.uv = (16 - element.east_face.uv[0], element.east_face.uv[1], 16 - element.east_face.uv[2], element.east_face.uv[3])
-    element.west_face.uv = (16 - element.west_face.uv[0], element.west_face.uv[1], 16 - element.west_face.uv[2], element.west_face.uv[3])
+    element.east_face.uv = (element.east_face.uv[2], element.east_face.uv[1], element.east_face.uv[0], element.east_face.uv[3])
+    element.west_face.uv = (element.west_face.uv[2], element.west_face.uv[1], element.west_face.uv[0], element.west_face.uv[3])
+    
     # element.east_face.uv, element.west_face.uv = element.west_face.uv, element.east_face.uv
     return element
 
