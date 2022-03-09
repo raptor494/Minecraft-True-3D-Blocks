@@ -1,0 +1,7 @@
+{
+    "parent": "true3d:block/template_door_top_hinge",
+    "textures": {
+        "door": "supplementaries:blocks/gold_door_top",
+        "sides": "true3d:block/door_sides/supplementaries/gold_top"
+    }
+}
