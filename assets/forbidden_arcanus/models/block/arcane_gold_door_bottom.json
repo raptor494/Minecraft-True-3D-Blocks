@@ -1,0 +1,120 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"door": "forbidden_arcanus:block/arcane_gold_door_bottom",
+		"sides": "true3d:block/door_sides/forbidden_arcanus/arcane_gold_bottom"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [3, 16, 3],
+			"faces": {
+				"north": {"uv": [3, 0, 0, 16], "texture": "#sides", "cullface": "north"},
+				"east": {"uv": [3, 0, 0, 16], "texture": "#door"},
+				"south": {"uv": [13, 0, 16, 16], "texture": "#sides"},
+				"west": {"uv": [0, 0, 3, 16], "texture": "#door", "cullface": "west"},
+				"down": {"uv": [13, 0, 16, 3], "texture": "#sides", "cullface": "down"}
+			}
+		},
+		{
+			"from": [1.5, 4, 3],
+			"to": [1.5, 16, 11],
+			"faces": {
+				"east": {"uv": [11, 0, 3, 12], "texture": "#door"},
+				"west": {"uv": [3, 0, 11, 12], "texture": "#door"}
+			}
+		},
+		{
+			"from": [3, 15, 11],
+			"to": [3, 16, 12],
+			"faces": {
+				"east": {"uv": [12, 0, 11, 1], "texture": "#door"},
+				"west": {"uv": [11, 0, 12, 1], "texture": "#door", "cullface": "west"}
+			}
+		},
+		{
+			"from": [0, 15, 11],
+			"to": [0, 16, 12],
+			"faces": {
+				"east": {"uv": [12, 0, 11, 1], "texture": "#door"},
+				"west": {"uv": [11, 0, 12, 1], "texture": "#door", "cullface": "west"}
+			}
+		},
+		{
+			"from": [1.5, 15, 11],
+			"to": [1.5, 16, 12],
+			"faces": {
+				"east": {"uv": [4, 0, 5, 1], "texture": "#door"},
+				"west": {"uv": [5, 0, 4, 1], "texture": "#door"}
+			}
+		},
+		{
+			"from": [1.5, 4, 12],
+			"to": [1.5, 16, 13],
+			"faces": {
+				"east": {"uv": [13, 0, 12, 12], "texture": "#door"},
+				"west": {"uv": [12, 0, 13, 12], "texture": "#door"}
+			}
+		},
+		{
+			"from": [0, 0, 13],
+			"to": [3, 16, 16],
+			"faces": {
+				"north": {"uv": [13, 0, 16, 16], "texture": "#sides"},
+				"east": {"uv": [16, 0, 13, 16], "texture": "#door"},
+				"south": {"uv": [13, 0, 16, 16], "texture": "#sides", "cullface": "south"},
+				"west": {"uv": [13, 0, 16, 16], "texture": "#door", "cullface": "west"},
+				"down": {"uv": [13, 13, 16, 16], "texture": "#sides", "cullface": "down"}
+			}
+		},
+		{
+			"from": [1.5, 3, 11],
+			"to": [1.5, 15, 12],
+			"faces": {
+				"east": {"uv": [12, 1, 11, 13], "texture": "#door"},
+				"west": {"uv": [11, 1, 12, 13], "texture": "#door"}
+			}
+		},
+		{
+			"from": [0, 0, 3],
+			"to": [3, 4, 4],
+			"faces": {
+				"east": {"uv": [4, 12, 3, 16], "texture": "#door"},
+				"south": {"uv": [13, 12, 16, 16], "texture": "#sides"},
+				"west": {"uv": [3, 12, 4, 16], "texture": "#door", "cullface": "west"},
+				"up": {"uv": [13, 3, 16, 4], "texture": "#sides"},
+				"down": {"uv": [13, 3, 16, 4], "texture": "#sides", "cullface": "down"}
+			}
+		},
+		{
+			"from": [1.5, 3, 4],
+			"to": [1.5, 4, 11],
+			"faces": {
+				"east": {"uv": [11, 12, 4, 13], "texture": "#door"},
+				"west": {"uv": [4, 12, 11, 13], "texture": "#door"}
+			}
+		},
+		{
+			"from": [0, 0, 12],
+			"to": [3, 4, 13],
+			"faces": {
+				"north": {"uv": [13, 12, 16, 16], "texture": "#sides"},
+				"east": {"uv": [13, 12, 12, 16], "texture": "#door"},
+				"west": {"uv": [12, 12, 13, 16], "texture": "#door", "cullface": "west"},
+				"up": {"uv": [13, 12, 16, 13], "texture": "#sides"},
+				"down": {"uv": [13, 12, 16, 13], "texture": "#sides", "cullface": "down"}
+			}
+		},
+		{
+			"from": [0, 0, 4],
+			"to": [3, 3, 12],
+			"faces": {
+				"east": {"uv": [12, 13, 4, 16], "texture": "#door"},
+				"west": {"uv": [4, 13, 12, 16], "texture": "#door", "cullface": "west"},
+				"up": {"uv": [13, 4, 16, 12], "texture": "#sides"},
+				"down": {"uv": [13, 4, 16, 12], "texture": "#sides", "cullface": "down"}
+			}
+		}
+	]
+}
