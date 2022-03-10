@@ -1,0 +1,7 @@
+{
+	"parent": "true3d:block/template_door_top",
+	"textures": {
+		"door": "tconstruct:block/wood/greenheart/door_top",
+		"sides": "true3d:block/door_sides/tconstruct/greenheart_top"
+	}
+}
