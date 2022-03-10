@@ -454,7 +454,7 @@ def make_template_door_bottom(rectangles: Iterable[Rectangle[int, FaceData]], gr
         if from_x == 0:
             element.west_face.cullface = Direction.WEST
         match r.data.type:
-            case FaceType.SOLID:
+            case FaceType.SOLID if from_x != to_x:
                 if r.x == 0:
                     has_left_face = True
                     cullface = Direction.NORTH
