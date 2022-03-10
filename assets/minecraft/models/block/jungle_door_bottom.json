@@ -1,7 +1,7 @@
 {
 	"parent": "true3d:block/template_door_bottom",
 	"textures": {
-		"door": "block/jungle_door_bottom",
+		"door": "minecraft:block/jungle_door_bottom",
 		"sides": "true3d:block/door_sides/minecraft/jungle_bottom"
 	}
 }
