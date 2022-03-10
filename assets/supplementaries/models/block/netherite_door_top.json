@@ -1,0 +1,111 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "#door",
+		"door": "supplementaries:blocks/netherite_door_top",
+		"sides": "true3d:block/door_sides/supplementaries/netherite_top"
+	},
+	"elements": [
+		{
+			"from": [ 0, 11, 0 ],
+			"to": [ 3, 16, 16 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 3, 0, 0, 5 ],
+					"cullface": "north"
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 13, 0, 16, 5 ],
+					"cullface": "south"
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 16, 0, 0, 5 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 0, 0, 16, 5 ],
+					"cullface": "west"
+				},
+				"up": {
+					"texture": "#sides",
+					"uv": [ 13, 0, 16, 16 ],
+					"cullface": "up"
+				},
+				"down": {
+					"texture": "#sides",
+					"uv": [ 13, 0, 16, 16 ]
+				}
+			}
+		},
+		{
+			"from": [ 0, 0, 0 ],
+			"to": [ 3, 11, 4 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 3, 5, 0, 16 ],
+					"cullface": "north"
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 13, 5, 16, 16 ]
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 4, 5, 0, 16 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 0, 5, 4, 16 ],
+					"cullface": "west"
+				}
+			}
+		},
+		{
+			"from": [ 0, 0, 12 ],
+			"to": [ 3, 11, 16 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 13, 5, 16, 16 ]
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 13, 5, 16, 16 ],
+					"cullface": "south"
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 16, 5, 12, 16 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 12, 5, 16, 16 ],
+					"cullface": "west"
+				}
+			}
+		},
+		{
+			"from": [ 0, 0, 4 ],
+			"to": [ 3, 8, 12 ],
+			"faces": {
+				"east": {
+					"texture": "#door",
+					"uv": [ 12, 8, 4, 16 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 4, 8, 12, 16 ],
+					"cullface": "west"
+				},
+				"up": {
+					"texture": "#sides",
+					"uv": [ 13, 4, 16, 12 ]
+				}
+			}
+		}
+	]
+}
