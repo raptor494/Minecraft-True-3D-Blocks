@@ -1,0 +1,7 @@
+{
+	"parent": "true3d:block/template_door_bottom",
+	"textures": {
+		"door": "architects_palette:block/twisted_door_bottom",
+		"sides": "true3d:block/door_sides/architects_palette/twisted_bottom"
+	}
+}
