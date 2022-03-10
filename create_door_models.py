@@ -1,7 +1,7 @@
+#!python
 from __future__ import annotations
 from enum import Enum, auto
-from turtle import up
-import typing; from typing import Iterable, Literal, NamedTuple, TypeAlias, Sequence, TypeVar, Generic
+import typing; from typing import Any, Callable, Iterable, Literal, NamedTuple, TypeAlias, Sequence, TypeVar, Generic, cast, overload
 import dataclasses; from dataclasses import dataclass
 from math import gcd
 from json_utils import json
@@ -16,6 +16,12 @@ else:
 
 N = TypeVar('N', bound=Number)
 T = TypeVar('T')
+
+def makeinteger(val: int | float) -> int | float:
+    if isinstance(val, float) and val.is_integer():
+        return int(val)
+    else:
+        return val
 
 @dataclass
 class Rectangle(Generic[N, T]):
@@ -196,7 +202,7 @@ def find_rectangle(img: Image, x: int, y: int, grid: Sequence[Sequence[Rectangle
 
     return Rectangle(x, y, width, height, color)
 
-def get_rectangles(img: Image, direction: FindRectangleDirection=("left-right", "top-bottom")) -> list[Rectangle[int, ColorRGBA]]:
+def get_rectangles(img: Image, direction: FindRectangleDirection=("left-right", "top-bottom"), print_grid: bool=False) -> list[Rectangle[int, ColorRGBA]]:
     rectangles: list[Rectangle[int, ColorRGBA]] = []
 
     initial_x = initial_y = 0
@@ -250,26 +256,27 @@ def get_rectangles(img: Image, direction: FindRectangleDirection=("left-right", 
                         r = find_rectangle(img, x, y, rectangle_grid, direction)
                         add_rect(r)
 
-    from collections import defaultdict
-    counter = 1
-    def next_counter():
-        nonlocal counter
-        counter += 1
-        return counter
-    ids = defaultdict(next_counter)
-    print("  ", end="")
-    for i in range(len(rectangle_grid[0])):
-        print(f"|{i:02d}", end="")
-    print()
-    for i, row in enumerate(rectangle_grid):
-        print(f"{i:02d}|", end="")
-        for col in row:
-            if col is None or col.data[3] == 0:
-                print("\33[0m   ", end="")
-            else:
-                print(f"\33[48;5;{ids[id(col)]}m   ", end="")
-        print("\33[0m")
-    print("\33[0m-")
+    if print_grid:
+        from collections import defaultdict
+        counter = 1
+        def next_counter():
+            nonlocal counter
+            counter += 1
+            return counter
+        ids = defaultdict(next_counter)
+        print("  ", end="")
+        for i in range(len(rectangle_grid[0])):
+            print(f"|{i:02d}", end="")
+        print()
+        for i, row in enumerate(rectangle_grid):
+            print(f"{i:02d}|", end="")
+            for col in row:
+                if col is None or col.data[3] == 0:
+                    print("\33[0m   ", end="")
+                else:
+                    print(f"\33[48;5;{ids[id(col)]}m   ", end="")
+            print("\33[0m")
+        print("\33[0m-")
 
     return rectangles
 
@@ -310,6 +317,19 @@ class Face:
     def clone(self):
         return Face(self.texture, self.uv, self.cullface)
 
+    def __setattr__(self, name: str, value):
+        if name == 'uv':
+            match value:
+                case [int(x1) | float(x1), int(y1) | float(y1), int(x2) | float(x2), int(y2) | float(y2)]:
+                    x1 = makeinteger(x1)
+                    y1 = makeinteger(y1)
+                    x2 = makeinteger(x2)
+                    y2 = makeinteger(y2)
+                    value = (x1, y1, x2, y2)
+                case _:
+                    raise TypeError("invalid uv value, must be sequence of 4 ints or floats")
+        super().__setattr__(name, value)
+
 @dataclass
 class Point:
     x: int | float = 0
@@ -330,9 +350,9 @@ class Point:
             case [], {} if len(kwargs) == 0: x = y = z = 0
             case _:
                 raise TypeError("invalid arguments to Point")
-        self.x = x
-        self.y = y
-        self.z = z
+        self.x = makeinteger(x)
+        self.y = makeinteger(y)
+        self.z = makeinteger(z)
 
 @dataclass
 class Element:
@@ -624,6 +644,15 @@ def make_template_door_top(rectangles: Iterable[Rectangle[int, FaceData]], grid:
 def make_template_door_top_hinge(rectangles: Iterable[Rectangle[int, FaceData]], grid: Sequence[Sequence[Rectangle[int, FaceData] | None]]):
     return list(map(make_hinge_element, make_template_door_top(rectangles, grid)))
 
+def builtin_template_SOLID():
+    faces_upper = [Rectangle(0, 0, 16, 16, FaceData())]
+    faces_lower = [Rectangle(0, 0, 16, 16, FaceData())]
+    return faces_upper, faces_lower, 16
+
+BUILTIN_TEMPLATES: dict[str, Callable[[], tuple[list[Rectangle[int, FaceData]], list[Rectangle[int, FaceData]], int]]] = {
+    'SOLID': builtin_template_SOLID
+}
+
 def main(argv=None):
     from pathlib import Path
     import re
@@ -633,22 +662,69 @@ def main(argv=None):
     IDENTIFIER_REGEX = re.compile(r'^[a-zA-Z_0-9]+:[a-zA-Z_0-9]+$')
     def ResourceLocation(s: str, /):
         if not IDENTIFIER_REGEX.fullmatch(s):
-            raise argparse.ArgumentTypeError
+            raise argparse.ArgumentTypeError("invalid format")
         return s.split(':', 1)
-    
-    parser = argparse.ArgumentParser()
-    parser.add_argument('template', metavar='TEMPLATE', type=Path, help='Path to the template image file')
-    parser.add_argument('name', metavar='NAME', type=ResourceLocation, help='The name of the door type')
+   
+    class CustomHelpAction(argparse._HelpAction):
+        def __call__(self, parser, namespace, values, option_string=None):
+            import re
+            part_regexp = re.compile(
+                r'\(.*?\)+(?=\s|$)|'
+                r'\[.*?\]+(?=\s|$)|'
+                r'\S+',
+                re.MULTILINE
+            )
+            import shutil
+            width = shutil.get_terminal_size().columns
+            width -= 2
+            import textwrap
+            lines = (
+                """A door template is a 1x2-tile .png image that describes the shape of the door. Each pixel's color
+                has a certain meaning, described as follows:""",
+                """- The image is divided into same-color rectangles (including alpha). You can optionally provide a
+                NAME.areas.png file containing any colors you desire which will be used to split the door into rectangles.
+                Note that corresponding areas on the primary template must contain all the same color.""",
+                """- The rectangles will be converted into cubes to make up the door model.""",
+                """- All rectangles must be grayscale (that is, R = G = B)""",
+                """- The grayscale value must be either 0, 64, 128, or 255, depending on the desired width of the output cube.""",
+                """    0 = 3 voxels""",
+                """    64 = 2 voxels""",
+                """    128 = 1 voxel""",
+                """    255 = flat""",
+                """    The output cube will be centered on x=1.""",
+                """- The rectangle's alpha must be either 255, 128, or 64, depending on the desired the shape of the cube.""",
+                """    255 = solid""",
+                """    128 = overlayd (no side faces are output, and the primary faces have reverse-side textures)""",
+                """    64 = glass (no side faces are output, but there are also no reverse-side textures)""",
+                """The final model will expect the door's primary texture to reside in NAMESPACE:block/NAME_door_top and NAME_door_bottom
+                and a texture for the sides to reside in true3d:block/door_sides/NAMESPACE/NAME_top and NAME_bottom."""
+            )
+            parser.print_help()
+            print()
+            for line in lines:
+                indent = ' '*(len(line) - len(line := line.lstrip()))
+                line = ' '.join(part_regexp.findall(line))
+                print(textwrap.fill(line, width, initial_indent=indent, subsequent_indent=indent))
+            parser.exit()
+
+    parser = argparse.ArgumentParser(formatter_class=argparse.HelpFormatter, add_help=False, epilog="Given a door template, generates the top and bottom models.")
+    parser.add_argument('templates_dir', metavar='TEMPLATES_DIR', type=Path, help="""\
+        Path to the templates folder. The primary template will be TEMPLATES_DIR/NAMESPACE/NAME.png and
+        the (optional) secondary template will be TEMPLATES_DIR/NAMESPACE/NAME.areas.png.
+        You can also do :NAME to use a built-in template. Built-in templates are: SOLID (no openings, just a single solid block)""")
+    parser.add_argument('name', metavar='NAMESPACE:NAME', type=ResourceLocation, help='The namespace/name of the door type')
+    parser.add_argument('-h', '--help', action=CustomHelpAction, dest='help', help="show this help message and exit")
     parser.add_argument('--output', '-o', metavar='FOLDER', type=Path, default=".", help='Path to output folder (defaults to ".")')
     parser.add_argument('--direction', '-d', nargs=2, choices=typing.get_args(FindRectangleDirectionHorizontal) + typing.get_args(FindRectangleDirectionVertical))
-    parser.add_argument('-f', dest='no_prompt', action='store_true', help="Don't prompt on replace")
+    parser.add_argument('--no-prompt', '-f', dest='no_prompt', action='store_true', help="Don't prompt on replace")
+    parser.add_argument('--no-print-areas', '-q', action='store_true', help='Do not output the calculated areas to the console')
     group1 = parser.add_mutually_exclusive_group()
-    group1.add_argument('--top', action='store_true', help='Only do the top half')
-    group1.add_argument('--bottom', action='store_true', help='Only do the bottom half')
+    group1.add_argument('--top', '-t', action='store_true', help='Only do the top half')
+    group1.add_argument('--bottom', '-b', action='store_true', help='Only do the bottom half')
 
     args = parser.parse_args(argv)
 
-    template_img_path: Path = args.template
+    templates_dir_path: Path = args.templates_dir
     resource_name: tuple[str, str] = args.name
     namespace, door_name = resource_name
     output_dir_path: Path = args.output
@@ -656,84 +732,162 @@ def main(argv=None):
     do_top: bool = not args.bottom
     do_bottom: bool = not args.top
     prompt_on_replace: bool = not args.no_prompt
+    print_areas: bool = not args.no_print_areas
 
-    if not template_img_path.is_file():
-        print("Error: given template image does not exist or is not a file", file=sys.stderr)
-        exit(1)
+    if m := re.fullmatch(r'^:([A-Z_][A-Z_0-9]*)$', str(templates_dir_path)):
+        builtin_template_name = cast(str, m[1])
+        if builtin_template_name in BUILTIN_TEMPLATES:
+            faces_upper, faces_lower, template_width = BUILTIN_TEMPLATES[builtin_template_name]()
+            template_height = 2*template_width
+        else:
+            print(f"Error: unknown built-in template ':{builtin_template_name}'", file=sys.stderr)
+            exit(1)
+    else:
+        builtin_template_name = None
+        templates_dir_path /= namespace
 
-    if template_img_path.suffix != '.png':
-        print("Error: given template image is not a .png image", file=sys.stderr)
-        exit(1)
+        if not templates_dir_path.is_dir():
+            print("Error: templates path", templates_dir_path, "does not exist or is not a directory", file=sys.stderr)
+            exit(1)
 
-    if not output_dir_path.exists():
-        output_dir_path.mkdir(parents=True, exist_ok=True)
-    elif not output_dir_path.is_dir():
-        print("Error: given output path is not a directory", file=sys.stderr)
-        exit(1)
+        template_img_path = templates_dir_path/f'{door_name}.png'
+        template_rect_path = templates_dir_path/f'{door_name}.areas.png'
 
-    template_img = image.open(template_img_path, formats=["png"]).convert("RGBA")
+        if not template_img_path.is_file():
+            print("Error: template image does not exist or is not a file", file=sys.stderr)
+            exit(1)
+        
+        if template_rect_path.exists() and not template_rect_path.is_file():
+            print("Error: template areas image is not a file", file=sys.stderr)
+            exit(1)
 
-    if template_img.height != 2 * template_img.width:
-        print("Error: template image must be a 1x2 rectangle", file=sys.stderr)
-        exit(1)
+        if not output_dir_path.exists():
+            output_dir_path.mkdir(parents=True, exist_ok=True)
+        elif not output_dir_path.is_dir():
+            print("Error: output path is not a directory", file=sys.stderr)
+            exit(1)
 
-    if gcd(template_img.width, 16) != 16:
-        print("Error: template image size must be a multiple of 16", file=sys.stderr)
-        exit(1)
+        template_img = image.open(template_img_path, formats=["png"]).convert("RGBA")
+        
+        template_width, template_height = template_img.size
 
-    rectangles_upper = get_rectangles(template_img.crop((0, 0, 16, 16)), direction)
-    rectangles_lower = get_rectangles(template_img.crop((0, 16, 16, 32)), direction)
-    
-    
+        if template_height != 2 * template_width:
+            print("Error: template image must be a 1x2 rectangle", file=sys.stderr)
+            exit(1)
 
-    faces_upper = get_faces(rectangles_upper)
-    faces_lower = get_faces(rectangles_lower)
+        if gcd(template_width, 16) != 16:
+            print("Error: template image size must be a multiple of 16", file=sys.stderr)
+            exit(1)
+        
+        if template_rect_path.exists():
+            template_rect_img = image.open(template_rect_path, formats=["png"]).convert("RGBA")
+            if template_rect_img.size != template_img.size:
+                print("Error: template areas image's size must match template image's size", file=sys.stderr)
+                exit(1)
+            rectangles_upper = get_rectangles(template_rect_img.crop((0, 0, 16, 16)), direction, print_areas)
+            rectangles_lower = get_rectangles(template_rect_img.crop((0, 16, 16, 32)), direction, print_areas)
+
+            for r in rectangles_upper:
+                color: ColorRGBA = template_img.getpixel((r.x, r.y))
+                for y in range(r.y, r.y + r.height):
+                    for x in range(r.x, r.x + r.width):
+                        if template_img.getpixel((x, y)) != color:
+                            print(f"Error: one of the template areas image's rectangles had multiple colors in the template image:\nrectangle = ({r.x:d}, {r.y:d}) {r.width:d}x{r.height:d}, pixel = ({x:d}, {y:d})", file=sys.stderr)
+                            exit(1)
+                r.data = color
+            boxheight = template_height // 2
+            for r in rectangles_lower:
+                color: ColorRGBA = template_img.getpixel((r.x, r.y + boxheight))
+                for y in range(r.y + boxheight, r.y + r.height + boxheight):
+                    for x in range(r.x, r.x + r.width):
+                        if template_img.getpixel((x, y)) != color:
+                            print(f"Error: one of the template areas image's rectangles had multiple colors in the template image:\nrectangle = ({r.x:d}, {r.y:d}) {r.width:d}x{r.height:d}, pixel = ({x:d}, {y:d})", file=sys.stderr)
+                            exit(1)
+                r.data = color
+        else:
+            rectangles_upper = get_rectangles(template_img.crop((0, 0, 16, 16)), direction, print_areas)
+            rectangles_lower = get_rectangles(template_img.crop((0, 16, 16, 32)), direction, print_areas)
+
+        faces_upper = get_faces(rectangles_upper)
+        faces_lower = get_faces(rectangles_lower)
+
     faces_lower_temp = [Rectangle(face.x, face.y, face.width, face.height, face.data) for face in faces_lower]
     for face in faces_lower_temp:
         face.y += 16
-    grid = get_grid(faces_upper + faces_lower_temp, template_img.width, template_img.height)
-    faces = faces_upper + faces_lower
+    grid = get_grid(faces_upper + faces_lower_temp, template_width, template_height)
+    # faces = faces_upper + faces_lower
 
-    
-
-    print("-----------")
-    print("  ", end="")
-    for i in range(len(grid[0])):
-        print(f"|{i:02d}", end="")
-    print()
-    for i, row in enumerate(grid):
-        print(f"{i:02d}|", end="")
-        for col in row:
-            if col is None:
-                print("\33[0m   ", end="")
-            else:
-                c = 0
-                match col.data.depth:
-                    case 3:
-                        c = 16
-                    case 2:
-                        c = 8
-                    case 1:
-                        c = 7
-                    case 0:
-                        c = 15
-                match col.data.type:
-                    case FaceType.SOLID:
-                        pass
-                    case FaceType.GLASS:
-                        c += 21
-                    case FaceType.OVERLAY:
-                        c += 41
-                print(f"\33[48;5;{c}m   ", end="")
-        print("\33[0m")
-    print("\33[0m-")
+    if print_areas:
+        print("-----------")
+        print("  ", end="")
+        for i in range(len(grid[0])):
+            print(f"|{i:02d}", end="")
+        print()
+        for i, row in enumerate(grid):
+            print(f"{i:02d}|", end="")
+            for col in row:
+                if col is None:
+                    print("\33[0m   ", end="")
+                else:
+                    c = 0
+                    match col.data.depth:
+                        case 3:
+                            c = 16
+                        case 2:
+                            c = 8
+                        case 1:
+                            c = 7
+                        case 0:
+                            c = 15
+                    match col.data.type:
+                        case FaceType.SOLID:
+                            pass
+                        case FaceType.GLASS:
+                            c += 21
+                        case FaceType.OVERLAY:
+                            c += 41
+                    print(f"\33[48;5;{c}m   ", end="")
+            print("\33[0m")
+        print("\33[0m-")
 
     door_bottom_elements = make_template_door_bottom(faces_lower, grid)
-    door_bottom_hinge_elements = list(map(make_hinge_element, door_bottom_elements))
     door_top_elements = make_template_door_top(faces_upper, grid)
-    door_top_hinge_elements = list(map(make_hinge_element, door_top_elements))
 
-    
+    if builtin_template_name == 'SOLID':
+        solid_bottom = solid_top = True
+    else:
+        match door_bottom_elements:
+            case [Element(
+                from_=Point(0,0,0),
+                to=Point(3,16,16),
+                north_face=Face(texture="#sides", uv=[3,0,0,16], cullface=Direction.NORTH),
+                south_face=Face(texture="#sides", uv=[13,0,16,16], cullface=Direction.SOUTH),
+                east_face=Face(texture="#door", uv=[16,0,0,16], cullface=None),
+                west_face=Face(texture="#door", uv=[0,0,16,16], cullface=Direction.WEST),
+                up_face=None,
+                down_face=Face(texture="#sides", uv=[13,0,16,16], cullface=Direction.DOWN)
+            )]:
+                solid_bottom = True
+            case _:
+                solid_bottom = False
+
+        match door_top_elements:
+            case [Element(
+                from_=Point(0,0,0),
+                to=Point(3,16,16),
+                north_face=Face(texture="#sides", uv=[3,0,0,16], cullface=Direction.NORTH),
+                south_face=Face(texture="#sides", uv=[13,0,16,16], cullface=Direction.SOUTH),
+                east_face=Face(texture="#door", uv=[16,0,0,16], cullface=None),
+                west_face=Face(texture="#door", uv=[0,0,16,16], cullface=Direction.WEST),
+                up_face=Face(texture="#sides", uv=[13,0,16,16], cullface=Direction.UP),
+                down_face=None
+            )]:
+                solid_top = True
+            case _:
+                solid_top = False
+
+    door_bottom_hinge_elements = list(map(make_hinge_element, door_bottom_elements)) if not solid_bottom else None
+    door_top_hinge_elements = list(map(make_hinge_element, door_top_elements)) if not solid_top else None
 
     def json_default(obj):
         if isinstance(obj, Direction):
@@ -771,53 +925,52 @@ def main(argv=None):
             return d
         raise TypeError
 
-    if do_top:
-        textures = {
-            "particle": "#door",
-            "door": f"{namespace}:block/{door_name}_door_top",
-            "sides": f"true3d:block/door_sides/{namespace}/{door_name}_top"
-        }
+    @overload
+    def make_model(elements: Any, type: Literal['bottom', 'top'], solid: Literal[True], hinge: bool): ...
 
-        p = output_dir_path/f'{door_name}_door_top.json'
+    @overload
+    def make_model(elements: list[Element], type: Literal['bottom', 'top'], solid: Literal[False], hinge: bool): ...
+
+    @overload
+    def make_model(elements: list[Element] | Any, type: Literal['bottom', 'top'], solid: bool, hinge: bool): ...
+
+    def make_model(elements: list[Element], type: Literal['bottom', 'top'], solid: bool, hinge: bool):
+        type_with_hinge_opt = f'{type}_hinge' if hinge else type
+        p = output_dir_path/f'{door_name}_door_{type_with_hinge_opt}.json'
         if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
-            with p.open('w') as file:
-                json.dump({
+            if solid:
+                data = {
+                    "parent": f"true3d:block/template_door_{type_with_hinge_opt}",
+                    "textures": {
+                        "door": f"{namespace}:block/{door_name}_door_{type}",
+                        "sides": f"true3d:block/door_sides/{namespace}/{door_name}_{type}"
+                    }
+                }
+            else:
+                if not isinstance(elements, Sequence):
+                    raise TypeError("elements must be a sequence")
+                if not all(isinstance(element, Element) for element in elements):
+                    raise TypeError("elements must be a sequence of Element")
+                data = {
                     "ambientocclusion": False,
-                    "textures": textures,
-                    "elements": door_top_elements
-                }, file, default=json_default)
-        p = output_dir_path/f'{door_name}_door_top_hinge.json'
-        if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
+                    "textures": {
+                        "particle": "#door",
+                        "door": f"{namespace}:block/{door_name}_door_{type}",
+                        "sides": f"true3d:block/door_sides/{namespace}/{door_name}_{type}"
+                    },
+                    "elements": elements
+                }
             with p.open('w') as file:
-                json.dump({
-                    "ambientocclusion": False,
-                    "textures": textures,
-                    "elements": door_top_hinge_elements
-                }, file, default=json_default)
+                json.dump(data, file, default=json_default)
+
+    
+    if do_top:
+        make_model(door_top_elements, 'top', solid_top, hinge=False)
+        make_model(door_top_hinge_elements, 'top', solid_top, hinge=True)
 
     if do_bottom:
-        textures = {
-            "particle": "#door",
-            "door": f"{namespace}:block/{door_name}_door_bottom",
-            "sides": f"true3d:block/door_sides/{namespace}/{door_name}_bottom"
-        }
-
-        p = output_dir_path/f'{door_name}_door_bottom.json'
-        if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
-            with p.open('w') as file:
-                json.dump({
-                    "ambientocclusion": False,
-                    "textures": textures,
-                    "elements": door_bottom_elements
-                }, file, default=json_default)
-        p = output_dir_path/f'{door_name}_door_bottom_hinge.json'
-        if not prompt_on_replace or not p.exists() or input(f"{p} already exists, replace it? (Y/N): ").startswith(("y", "Y")):
-            with p.open('w') as file:
-                json.dump({
-                    "ambientocclusion": False,
-                    "textures": textures,
-                    "elements": door_bottom_hinge_elements
-                }, file, default=json_default)
+        make_model(door_bottom_elements, 'bottom', solid_bottom, hinge=False)
+        make_model(door_bottom_hinge_elements, 'bottom', solid_bottom, hinge=True)
 
 if __name__ == '__main__':
     main()
