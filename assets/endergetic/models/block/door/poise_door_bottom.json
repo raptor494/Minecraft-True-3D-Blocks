@@ -1,0 +1,7 @@
+{
+	"parent": "true3d:block/template_door_bottom",
+	"textures": {
+		"door": "endergetic:block/poise_door_bottom",
+		"sides": "true3d:block/door_sides/endergetic/poise_bottom"
+	}
+}
