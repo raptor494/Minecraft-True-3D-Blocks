@@ -734,6 +734,12 @@ def main(argv=None):
     prompt_on_replace: bool = not args.no_prompt
     print_areas: bool = not args.no_print_areas
 
+    if not output_dir_path.exists():
+        output_dir_path.mkdir(parents=True, exist_ok=True)
+    elif not output_dir_path.is_dir():
+        print("Error: output path is not a directory", file=sys.stderr)
+        exit(1)
+
     if m := re.fullmatch(r'^:([A-Z_][A-Z_0-9]*)$', str(templates_dir_path)):
         builtin_template_name = cast(str, m[1])
         if builtin_template_name in BUILTIN_TEMPLATES:
@@ -759,12 +765,6 @@ def main(argv=None):
         
         if template_rect_path.exists() and not template_rect_path.is_file():
             print("Error: template areas image is not a file", file=sys.stderr)
-            exit(1)
-
-        if not output_dir_path.exists():
-            output_dir_path.mkdir(parents=True, exist_ok=True)
-        elif not output_dir_path.is_dir():
-            print("Error: output path is not a directory", file=sys.stderr)
             exit(1)
 
         template_img = image.open(template_img_path, formats=["png"]).convert("RGBA")
