@@ -1,7 +1,7 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "#door",
+		"particle": "architects_palette:block/twisted_door_top",
 		"door": "architects_palette:block/twisted_door_top",
 		"sides": "true3d:block/door_sides/architects_palette/twisted_top"
 	},

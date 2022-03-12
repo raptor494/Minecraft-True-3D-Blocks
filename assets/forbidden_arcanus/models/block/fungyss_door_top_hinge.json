@@ -1,7 +1,7 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "#door",
+		"particle": "forbidden_arcanus:block/fungyss_door_top",
 		"door": "forbidden_arcanus:block/fungyss_door_top",
 		"sides": "true3d:block/door_sides/forbidden_arcanus/fungyss_top"
 	},
