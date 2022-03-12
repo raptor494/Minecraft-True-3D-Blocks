@@ -1,7 +1,7 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "#door",
+		"particle": "forbidden_arcanus:block/edelwood_door_bottom",
 		"door": "forbidden_arcanus:block/edelwood_door_bottom",
 		"sides": "true3d:block/door_sides/forbidden_arcanus/edelwood_bottom"
 	},

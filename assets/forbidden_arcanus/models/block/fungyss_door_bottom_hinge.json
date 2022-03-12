@@ -2,6 +2,7 @@
 	"parent": "true3d:block/template_door_bottom_hinge",
 	"textures": {
 		"door": "forbidden_arcanus:block/fungyss_door_bottom",
-		"sides": "true3d:block/door_sides/forbidden_arcanus/fungyss_bottom"
+		"sides": "true3d:block/door_sides/forbidden_arcanus/fungyss_bottom",
+		"particle": "forbidden_arcanus:block/fungyss_door_bottom"
 	}
 }
