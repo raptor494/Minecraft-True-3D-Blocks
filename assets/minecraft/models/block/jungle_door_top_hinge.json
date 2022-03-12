@@ -1,7 +1,7 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "#door",
+		"particle": "minecraft:block/jungle_door_top",
 		"door": "minecraft:block/jungle_door_top",
 		"sides": "true3d:block/door_sides/minecraft/jungle_top"
 	},

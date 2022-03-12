@@ -1,7 +1,7 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "#door",
+		"particle": "biomesoplenty:block/mahogany_door_top",
 		"door": "biomesoplenty:block/mahogany_door_top",
 		"sides": "true3d:block/door_sides/biomesoplenty/mahogany_top"
 	},

@@ -1,7 +1,7 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "#door",
+		"particle": "biomesoplenty:block/willow_door_top",
 		"door": "biomesoplenty:block/willow_door_top",
 		"sides": "true3d:block/door_sides/biomesoplenty/willow_top"
 	},

@@ -3,7 +3,7 @@
 	"textures": {
 		"door": "biomesoplenty:block/fir_door_top",
 		"sides": "true3d:block/door_sides/biomesoplenty/fir_top",
-		"particle": "#door"
+		"particle": "biomesoplenty:block/fir_door_top"
 	},
 	"elements": [
 		{

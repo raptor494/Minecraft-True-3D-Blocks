@@ -2,6 +2,7 @@
 	"parent": "true3d:block/template_door_top",
 	"textures": {
 		"door": "block/dark_oak_door_top",
-		"sides": "true3d:block/door_sides/minecraft/dark_oak_top"
+		"sides": "true3d:block/door_sides/minecraft/dark_oak_top",
+		"particle": "block/dark_oak_door_top"
 	}
 }

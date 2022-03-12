@@ -1,7 +1,8 @@
 {
-    "parent": "true3d:block/template_door_bottom_hinge",
-    "textures": {
-        "door": "block/warped_door_bottom",
-        "sides": "true3d:block/door_sides/minecraft/warped_bottom"
-    }
+	"parent": "true3d:block/template_door_bottom_hinge",
+	"textures": {
+		"door": "block/warped_door_bottom",
+		"sides": "true3d:block/door_sides/minecraft/warped_bottom",
+		"particle": "block/warped_door_bottom"
+	}
 }

@@ -2,6 +2,7 @@
 	"parent": "true3d:block/template_door_top_hinge",
 	"textures": {
 		"door": "biomesoplenty:block/umbran_door_top",
-		"sides": "true3d:block/door_sides/biomesoplenty/umbran_top"
+		"sides": "true3d:block/door_sides/biomesoplenty/umbran_top",
+		"particle": "biomesoplenty:block/umbran_door_top"
 	}
 }

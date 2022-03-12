@@ -1,7 +1,7 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "#door",
+		"particle": "biomesoplenty:block/cherry_door_bottom",
 		"door": "biomesoplenty:block/cherry_door_bottom",
 		"sides": "true3d:block/door_sides/biomesoplenty/cherry_bottom"
 	},

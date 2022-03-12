@@ -1,51 +1,107 @@
 {
-    "credit": "Made with Blockbench",
-    "ambientocclusion": false,
-    "textures": {
-        "particle": "#door",
-        "door": "block/birch_door_bottom",
-        "sides": "true3d:block/door_sides/minecraft/birch_bottom"
-    },
-    "elements": [
-        {
-            "from": [0, 0, 0],
-            "to": [3, 12, 16],
-            "faces": {
-                "north": { "texture": "#sides", "uv": [16, 0, 13, 16], "cullface": "north" },
-                "south": { "texture": "#sides", "uv": [0, 4, 3, 16], "cullface": "south" },
-                "east" : { "texture": "#door", "uv": [0, 4, 16, 16] },
-                "west" : { "texture": "#door", "uv": [16, 4, 0, 16], "cullface": "west" },
-                "up"   : { "texture": "#sides", "uv": [13, 0, 16, 16] },
-                "down" : { "texture": "#sides", "uv": [13, 0, 16, 16], "cullface": "down" }
-            }
-        },
-        {
-            "from": [0, 12, 13],
-            "to": [3, 16, 16],
-            "faces": {
-                "north": { "texture": "#sides", "uv": [16, 0, 13, 4] },
-                "south": { "texture": "#sides", "uv": [0, 0, 3, 4], "cullface": "south" },
-                "east" : { "texture": "#door", "uv": [0, 0, 3, 4] },
-                "west" : { "texture": "#door", "uv": [3, 0, 0, 4], "cullface": "west" }
-            }
-        },
-        {
-            "from": [0, 12, 0],
-            "to": [3, 16, 3],
-            "faces": {
-                "north": { "texture": "#sides", "uv": [16, 0, 13, 4], "cullface": "north" },
-                "south": { "texture": "#sides", "uv": [13, 0, 16, 4] },
-                "east" : { "texture": "#door", "uv": [13, 0, 16, 4] },
-                "west" : { "texture": "#door", "uv": [16, 0, 13, 4], "cullface": "west" }
-            }
-        },
-        {
-            "from": [0.5, 12, 3],
-            "to": [2.5, 16, 13],
-            "faces": {
-                "east": { "texture": "#door", "uv": [3, 0, 13, 4] },
-                "west": { "texture": "#door", "uv": [13, 0, 3, 4] }
-            }
-        }
-    ]
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "block/birch_door_bottom",
+		"door": "block/birch_door_bottom",
+		"sides": "true3d:block/door_sides/minecraft/birch_bottom"
+	},
+	"elements": [
+		{
+			"from": [ 0, 0, 0 ],
+			"to": [ 3, 12, 16 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 16, 0, 13, 16 ],
+					"cullface": "north"
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 0, 4, 3, 16 ],
+					"cullface": "south"
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 0, 4, 16, 16 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 16, 4, 0, 16 ],
+					"cullface": "west"
+				},
+				"up": {
+					"texture": "#sides",
+					"uv": [ 13, 0, 16, 16 ]
+				},
+				"down": {
+					"texture": "#sides",
+					"uv": [ 13, 0, 16, 16 ],
+					"cullface": "down"
+				}
+			}
+		},
+		{
+			"from": [ 0, 12, 13 ],
+			"to": [ 3, 16, 16 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 16, 0, 13, 4 ]
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 0, 0, 3, 4 ],
+					"cullface": "south"
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 0, 0, 3, 4 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 3, 0, 0, 4 ],
+					"cullface": "west"
+				}
+			}
+		},
+		{
+			"from": [ 0, 12, 0 ],
+			"to": [ 3, 16, 3 ],
+			"faces": {
+				"north": {
+					"texture": "#sides",
+					"uv": [ 16, 0, 13, 4 ],
+					"cullface": "north"
+				},
+				"south": {
+					"texture": "#sides",
+					"uv": [ 13, 0, 16, 4 ]
+				},
+				"east": {
+					"texture": "#door",
+					"uv": [ 13, 0, 16, 4 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 16, 0, 13, 4 ],
+					"cullface": "west"
+				}
+			}
+		},
+		{
+			"from": [ 0.5, 12, 3 ],
+			"to": [ 2.5, 16, 13 ],
+			"faces": {
+				"east": {
+					"texture": "#door",
+					"uv": [ 3, 0, 13, 4 ]
+				},
+				"west": {
+					"texture": "#door",
+					"uv": [ 13, 0, 3, 4 ]
+				}
+			}
+		}
+	]
 }
