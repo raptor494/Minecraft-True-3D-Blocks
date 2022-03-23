@@ -3,7 +3,7 @@
     "textures": {
         "jukebox_side": "minecraft:block/jukebox_side",
         "jukebox_top": "minecraft:block/jukebox_top",
-        "jukebox_inside": "minecraft:block/jukebox_inside"
+        "jukebox_inside": "true3d:block/jukebox_inside"
     },
     "elements": [
         {
