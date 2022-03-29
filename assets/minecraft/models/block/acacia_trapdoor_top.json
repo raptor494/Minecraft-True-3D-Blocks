@@ -1,74 +1,74 @@
 {
-    "credit": "Made with Blockbench",
-    "textures": {
-        "face": "block/acacia_trapdoor",
-        "sides": "true3d:block/trapdoor_sides/minecraft/acacia",
-        "particle": "true3d:block/trapdoor_sides/minecraft/acacia"
-    },
-    "elements": [
-        {
-            "from": [0, 13, 0],
-            "to": [16, 16, 3],
-            "faces": {
-                "north": { "texture": "#sides", "uv": [0, 13, 16, 16], "cullface": "north" },
-                "south": { "texture": "#sides", "uv": [0, 3, 16, 6] },
-                "east" : { "texture": "#sides", "uv": [13, 0, 16, 3], "cullface": "east" },
-                "west" : { "texture": "#sides", "uv": [0, 0, 3, 3], "cullface": "west" },
-                "up"   : { "texture": "#face", "uv": [0, 13, 16, 16], "cullface": "up", "rotation": 180 },
-                "down" : { "texture": "#face", "uv": [0, 16, 16, 13], "rotation": 180 }
-            }
-        },
-        {
-            "from": [0, 13, 13],
-            "to": [16, 16, 16],
-            "faces": {
-                "north": { "texture": "#sides", "uv": [0, 3, 16, 6] },
-                "south": { "texture": "#sides", "uv": [0, 0, 16, 3], "cullface": "south" },
-                "east" : { "texture": "#sides", "uv": [0, 0, 3, 3], "cullface": "east" },
-                "west" : { "texture": "#sides", "uv": [13, 0, 16, 3], "cullface": "west" },
-                "up"   : { "texture": "#face", "uv": [0, 0, 16, 3], "cullface": "up", "rotation": 180 },
-                "down" : { "texture": "#face", "uv": [0, 3, 16, 0], "rotation": 180 }
-            }
-        },
-        {
-            "from": [14, 13, 3],
-            "to": [16, 16, 13],
-            "faces": {
-                "east": { "texture": "#sides", "uv": [3, 0, 13, 3], "cullface": "east" },
-                "west": { "texture": "#sides", "uv": [3, 3, 13, 6] },
-                "up"  : { "texture": "#face", "uv": [0, 3, 2, 13], "cullface": "up", "rotation": 180 },
-                "down": { "texture": "#face", "uv": [0, 13, 2, 3], "rotation": 180 }
-            }
-        },
-        {
-            "from": [9, 13, 3],
-            "to": [12, 16, 13],
-            "faces": {
-                "east": { "texture": "#sides", "uv": [3, 3, 13, 6] },
-                "west": { "texture": "#sides", "uv": [3, 3, 13, 6] },
-                "up"  : { "texture": "#face", "uv": [4, 3, 7, 13], "cullface": "up", "rotation": 180 },
-                "down": { "texture": "#face", "uv": [4, 13, 7, 3], "rotation": 180 }
-            }
-        },
-        {
-            "from": [4, 13, 3],
-            "to": [7, 16, 13],
-            "faces": {
-                "east": { "texture": "#sides", "uv": [3, 3, 13, 6] },
-                "west": { "texture": "#sides", "uv": [3, 3, 13, 6] },
-                "up"  : { "texture": "#face", "uv": [9, 3, 12, 13], "cullface": "up", "rotation": 180 },
-                "down": { "texture": "#face", "uv": [9, 13, 12, 3], "rotation": 180 }
-            }
-        },
-        {
-            "from": [0, 13, 3],
-            "to": [2, 16, 13],
-            "faces": {
-                "east": { "texture": "#sides", "uv": [3, 3, 13, 6] },
-                "west": { "texture": "#sides", "uv": [3, 0, 13, 3], "cullface": "west" },
-                "up"  : { "texture": "#face", "uv": [14, 3, 16, 13], "cullface": "up", "rotation": 180 },
-                "down": { "texture": "#face", "uv": [14, 13, 16, 3], "rotation": 180 }
-            }
-        }
-    ]
+	"credit": "Made with Blockbench",
+	"textures": {
+		"face": "block/acacia_trapdoor",
+		"particle": "true3d:block/trapdoor_sides/minecraft/acacia",
+		"sides": "true3d:block/trapdoor_sides/minecraft/acacia"
+	},
+	"elements": [
+		{
+			"from": [0, 13, 0],
+			"to": [16, 16, 3],
+			"faces": {
+				"north": {"uv": [0, 13, 16, 16], "texture": "#sides", "cullface": "north"},
+				"east": {"uv": [13, 0, 16, 3], "texture": "#sides", "cullface": "east"},
+				"south": {"uv": [0, 3, 16, 6], "texture": "#sides"},
+				"west": {"uv": [0, 0, 3, 3], "texture": "#sides", "cullface": "west"},
+				"up": {"uv": [0, 13, 16, 16], "rotation": 180, "texture": "#face", "cullface": "up"},
+				"down": {"uv": [16, 13, 0, 16], "texture": "#face"}
+			}
+		},
+		{
+			"from": [0, 13, 13],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 3, 16, 6], "texture": "#sides"},
+				"east": {"uv": [0, 0, 3, 3], "texture": "#sides", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 3], "texture": "#sides", "cullface": "south"},
+				"west": {"uv": [13, 0, 16, 3], "texture": "#sides", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 3], "rotation": 180, "texture": "#face", "cullface": "up"},
+				"down": {"uv": [16, 0, 0, 3], "texture": "#face"}
+			}
+		},
+		{
+			"from": [14, 13, 3],
+			"to": [16, 16, 13],
+			"faces": {
+				"east": {"uv": [3, 0, 13, 3], "texture": "#sides", "cullface": "east"},
+				"west": {"uv": [3, 3, 13, 6], "texture": "#sides"},
+				"up": {"uv": [0, 3, 2, 13], "rotation": 180, "texture": "#face", "cullface": "up"},
+				"down": {"uv": [2, 13, 0, 3], "texture": "#face"}
+			}
+		},
+		{
+			"from": [9, 13, 3],
+			"to": [12, 16, 13],
+			"faces": {
+				"east": {"uv": [3, 3, 13, 6], "texture": "#sides"},
+				"west": {"uv": [3, 3, 13, 6], "texture": "#sides"},
+				"up": {"uv": [4, 3, 7, 13], "rotation": 180, "texture": "#face", "cullface": "up"},
+				"down": {"uv": [7, 13, 4, 3], "texture": "#face"}
+			}
+		},
+		{
+			"from": [4, 13, 3],
+			"to": [7, 16, 13],
+			"faces": {
+				"east": {"uv": [3, 3, 13, 6], "texture": "#sides"},
+				"west": {"uv": [3, 3, 13, 6], "texture": "#sides"},
+				"up": {"uv": [9, 3, 12, 13], "rotation": 180, "texture": "#face", "cullface": "up"},
+				"down": {"uv": [12, 13, 9, 3], "texture": "#face"}
+			}
+		},
+		{
+			"from": [0, 13, 3],
+			"to": [2, 16, 13],
+			"faces": {
+				"east": {"uv": [3, 3, 13, 6], "texture": "#sides"},
+				"west": {"uv": [3, 0, 13, 3], "texture": "#sides", "cullface": "west"},
+				"up": {"uv": [14, 3, 16, 13], "rotation": 180, "texture": "#face", "cullface": "up"},
+				"down": {"uv": [16, 13, 14, 3], "texture": "#face"}
+			}
+		}
+	]
 }
