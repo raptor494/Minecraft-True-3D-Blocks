@@ -1,0 +1,6 @@
+{
+	"parent": "true3d:block/template_detector_rail_raised_sw",
+	"textures": {
+		"rail": "moreminecarts:block/lime_detector"
+	}
+}

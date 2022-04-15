@@ -1,0 +1,199 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"rail": "moreminecarts:block/projector_rail"
+	},
+	"elements": [
+		{
+			"name": "left rail",
+			"from": [2, 0.5, 0],
+			"to": [5, 1.5, 16],
+			"faces": {
+				"north": {"uv": [5, 0, 2, 1], "texture": "#rail", "cullface": "north"},
+				"east": {"uv": [4, 0, 5, 16], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [2, 15, 5, 16], "texture": "#rail", "cullface": "south"},
+				"west": {"uv": [2, 0, 3, 16], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [2, 0, 5, 16], "texture": "#rail"},
+				"down": {"uv": [2, 16, 5, 0], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "left rail inner",
+			"from": [5, 0.25, 3],
+			"to": [7, 0.75, 13],
+			"faces": {
+				"east": {"uv": [6, 3, 7, 13], "rotation": 90, "texture": "#rail"},
+				"west": {"uv": [5, 3, 6, 13], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [5, 3, 7, 13], "texture": "#rail"},
+				"down": {"uv": [5, 13, 7, 3], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "right rail",
+			"from": [11, 0.5, 0],
+			"to": [14, 1.5, 16],
+			"faces": {
+				"north": {"uv": [14, 0, 11, 1], "texture": "#rail", "cullface": "north"},
+				"east": {"uv": [13, 0, 14, 16], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [11, 15, 14, 16], "texture": "#rail", "cullface": "south"},
+				"west": {"uv": [11, 0, 12, 16], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [11, 0, 14, 16], "texture": "#rail"},
+				"down": {"uv": [12, 16, 14, 0], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "right rail inner",
+			"from": [9, 0.25, 3],
+			"to": [11, 0.75, 13],
+			"faces": {
+				"east": {"uv": [11, 3, 10, 13], "rotation": 90, "texture": "#rail"},
+				"west": {"uv": [9, 3, 10, 13], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [9, 3, 11, 13], "texture": "#rail"},
+				"down": {"uv": [9, 13, 11, 3], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "btm tie left",
+			"from": [1, 0, 13],
+			"to": [5, 0.75, 15],
+			"faces": {
+				"north": {"uv": [1, 13, 2, 14], "texture": "#rail"},
+				"south": {"uv": [1, 14, 2, 15], "texture": "#rail"},
+				"west": {"uv": [1, 13, 2, 15], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [1, 13, 2, 15], "texture": "#rail"},
+				"down": {"uv": [1, 15, 2, 13], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie middle",
+			"from": [5, 0, 13],
+			"to": [11, 0.75, 15],
+			"faces": {
+				"north": {"uv": [11, 13, 5, 14], "texture": "#rail"},
+				"south": {"uv": [5, 14, 11, 15], "texture": "#rail"},
+				"up": {"uv": [5, 13, 11, 15], "texture": "#rail"},
+				"down": {"uv": [11, 15, 5, 13], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie right",
+			"from": [11, 0, 13],
+			"to": [15, 0.75, 15],
+			"faces": {
+				"north": {"uv": [14, 13, 15, 14], "texture": "#rail"},
+				"east": {"uv": [14, 13, 15, 15], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [14, 14, 15, 15], "texture": "#rail"},
+				"up": {"uv": [14, 13, 15, 15], "texture": "#rail"},
+				"down": {"uv": [14, 15, 15, 13], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie left",
+			"from": [1, 0, 9],
+			"to": [7, 0.75, 11],
+			"faces": {
+				"north": {"uv": [1, 9, 2, 10], "texture": "#rail"},
+				"south": {"uv": [1, 10, 2, 11], "texture": "#rail"},
+				"west": {"uv": [1, 13, 2, 15], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [1, 9, 7, 11], "texture": "#rail"},
+				"down": {"uv": [1, 11, 2, 9], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie middle",
+			"from": [7, 0, 9],
+			"to": [9, 0.75, 11],
+			"faces": {
+				"north": {"uv": [9, 9, 7, 10], "texture": "#rail"},
+				"south": {"uv": [7, 10, 9, 11], "texture": "#rail"},
+				"up": {"uv": [7, 9, 9, 11], "texture": "#rail"},
+				"down": {"uv": [9, 11, 7, 9], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie right",
+			"from": [9, 0, 9],
+			"to": [15, 0.75, 11],
+			"faces": {
+				"north": {"uv": [14, 9, 15, 10], "texture": "#rail"},
+				"east": {"uv": [14, 9, 15, 11], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [14, 10, 15, 11], "texture": "#rail"},
+				"up": {"uv": [9, 9, 15, 11], "texture": "#rail"},
+				"down": {"uv": [14, 11, 15, 9], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie left",
+			"from": [1, 0, 5],
+			"to": [7, 0.75, 7],
+			"faces": {
+				"north": {"uv": [1, 5, 2, 6], "texture": "#rail"},
+				"south": {"uv": [1, 6, 2, 7], "texture": "#rail"},
+				"west": {"uv": [1, 5, 2, 7], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [1, 5, 7, 7], "texture": "#rail"},
+				"down": {"uv": [1, 7, 2, 5], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie middle",
+			"from": [7, 0, 5],
+			"to": [9, 0.75, 7],
+			"faces": {
+				"north": {"uv": [9, 5, 7, 6], "texture": "#rail"},
+				"south": {"uv": [7, 6, 9, 7], "texture": "#rail"},
+				"up": {"uv": [7, 5, 9, 7], "texture": "#rail"},
+				"down": {"uv": [9, 7, 7, 5], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie right",
+			"from": [9, 0, 5],
+			"to": [15, 0.75, 7],
+			"faces": {
+				"north": {"uv": [14, 5, 15, 6], "texture": "#rail"},
+				"east": {"uv": [14, 5, 15, 7], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [14, 6, 15, 7], "texture": "#rail"},
+				"up": {"uv": [9, 5, 15, 7], "texture": "#rail"},
+				"down": {"uv": [14, 7, 15, 5], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie left",
+			"from": [1, 0, 0],
+			"to": [6, 0.75, 5],
+			"faces": {
+				"north": {"uv": [1, 0, 6, 1], "texture": "#rail"},
+				"east": {"uv": [5, 0, 6, 5], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [1, 4, 6, 5], "texture": "#rail"},
+				"west": {"uv": [1, 0, 2, 5], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [1, 0, 6, 5], "texture": "#rail"},
+				"down": {"uv": [1, 5, 6, 0], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie middle",
+			"from": [6, 0, 1],
+			"to": [10, 0.75, 3],
+			"faces": {
+				"north": {"uv": [10, 1, 6, 2], "texture": "#rail"},
+				"south": {"uv": [6, 2, 10, 3], "texture": "#rail"},
+				"up": {"uv": [6, 1, 10, 3], "texture": "#rail"},
+				"down": {"uv": [10, 3, 6, 1], "texture": "#rail", "cullface": "down"}
+			}
+		},
+		{
+			"name": "btm tie right",
+			"from": [10, 0, 0],
+			"to": [15, 0.75, 5],
+			"faces": {
+				"north": {"uv": [10, 0, 15, 1], "texture": "#rail"},
+				"east": {"uv": [14, 0, 15, 5], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [10, 4, 15, 5], "texture": "#rail"},
+				"west": {"uv": [10, 0, 11, 5], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [10, 0, 15, 5], "texture": "#rail"},
+				"down": {"uv": [10, 5, 15, 0], "texture": "#rail", "cullface": "down"}
+			}
+		}
+	]
+}

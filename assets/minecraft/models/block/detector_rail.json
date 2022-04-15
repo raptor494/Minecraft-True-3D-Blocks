@@ -1,5 +1,5 @@
 {
-    "parent": "block/template_detector_rail_flat",
+    "parent": "true3d:block/template_detector_rail_flat",
     "textures": {
         "rail": "block/detector_rail"
     }

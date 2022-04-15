@@ -1,0 +1,6 @@
+{
+	"parent": "true3d:block/template_activator_rail_flat",
+	"textures": {
+		"rail": "thermal:block/lumium_activator_rail_on"
+	}
+}
