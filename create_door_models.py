@@ -1,10 +1,17 @@
 #!python
 from __future__ import annotations
+from abc import abstractmethod
 from enum import Enum, auto
 import typing; from typing import Any, Callable, Generator, Iterable, Literal, NamedTuple, TypeAlias, Sequence, TypeVar, Generic, cast, overload
 import dataclasses; from dataclasses import dataclass
 from math import gcd
 import itertools
+import functools
+import re
+import argparse
+import sys; from sys import exit
+import textwrap
+from pathlib import Path
 from json_utils import json
 from PIL import Image as image
 from PIL.Image import Image
@@ -12,18 +19,29 @@ from PIL.Image import Image
 N = TypeVar('N', int, float)
 T = TypeVar('T')
 
+@overload
+def iround(number: int, ndigits: int | None=...) -> int: ...
+@overload
+def iround(number: float, ndigits: None=...) -> int: ...
+@overload
+def iround(number: float, ndigits: int) -> int | float: ...
+
+def iround(number: int | float, ndigits: int=None):
+    return makeinteger(round(number, ndigits))
+
 def makeinteger(val: int | float) -> int | float:
     if isinstance(val, float) and val.is_integer():
         return int(val)
     else:
+        assert isinstance(val, int), type(val)
         return val
 
 @dataclass
-class Rectangle(Generic[N, T]):
-    x: N
-    y: N
-    width: N
-    height: N
+class Rectangle(Generic[T]):
+    x: int # top-left x coordinate
+    y: int # top-left y coordinate
+    width: int # width to the right
+    height: int # height down
     data: T
 
 # class FaceType(Enum):
@@ -44,60 +62,80 @@ class Mirror(Enum):
 
 @dataclass
 class FaceData:
-    depth: int | float = 3 # depth from 0 to 3
+    depth: int | float # depth of the face
     type: FaceType = FaceType.SOLID
-    depth2: int | float | None = None # depth from 0 to 3
+    depth2: int | float | None = None # depth of the second face, if any
     mirror: Mirror | None = None
 
-    @staticmethod
-    def from_color(color: ColorRGBA) -> FaceData:
-        if color[3] == 0:
-            raise ValueError("transparent color would result in no face")
-        if color == (0, 0, 0, 255):
-            return FaceData()
-        red, green, blue, alpha = color
-        d2 = None
-        match red:
-            case 0:
-                d = 3
-            case 64:
-                d = 2
-            case 128:
-                d = 1
-            case 255:
-                d = 0
-            case _:
-                raise ValueError(f"invalid red value {red:d}, must be either 0, 64, 128, or 255")
-        if green == red:
-            m = None
-        elif green == 255 - red or green == 256 - red:
-            m = Mirror.HORIZONTAL
-        else:
-            raise ValueError(f"invalid green value {green:d}, must be either {red:d} or {255 - red:d}")
-        match alpha:
-            case 255:
-                f = FaceType.SOLID
-            case 192:
-                f = FaceType.OVERLAY_AND_GLASS
-                match blue:
-                    case 0:
-                        d2 = 3
-                    case 64:
-                        d2 = 2
-                    case 128:
-                        d2 = 1
-                    case 255:
-                        d2 = 0
-                    case _:
-                        raise ValueError(f"invalid blue value {blue:d}, must be either 0, 64, 128, or 255 when alpha value is 192")
-            case 128:
-                f = FaceType.OVERLAY
-            case 64:
-                f = FaceType.GLASS
-            case _:
-                raise ValueError(f"invalid alpha value {alpha:d}")
+    def __setattr__(self, name: str, value):
+        match name:
+            case 'depth':
+                if not isinstance(value, int | float):
+                    raise TypeError("depth must be int or float")
+            case 'type':
+                if not isinstance(value, FaceType):
+                    raise TypeError(f"type must be a FaceType")
+            case 'depth2':
+                if not isinstance(value, int | float | None):
+                    raise TypeError("depth2 must be int, float, or None")
+            case 'mirror':
+                if not isinstance(value, Mirror | None):
+                    raise TypeError("mirror must be a Mirror or None")
+        super().__setattr__(name, value)
     
-        return FaceData(depth=d, type=f, depth2=d2, mirror=m)
+def face_data_from_color(color: ColorRGBA) -> FaceData:
+    if color[3] == 0:
+        raise ValueError("transparent color would result in no face")
+    if color == (0, 0, 0, 255):
+        return FaceData(depth=3)
+    red, green, blue, alpha = color
+    assert all(isinstance(c, int) for c in color), color
+    assert 0 <= red <= 255, red
+    assert 0 <= green <= 255, green
+    assert 0 <= blue <= 255, blue
+    assert 0 <= alpha <= 255, alpha
+    d2 = None
+    match red:
+        case 0:
+            d = 3
+        case 64:
+            d = 2
+        case 128:
+            d = 1
+        case 255:
+            d = 0
+        case _:
+            raise ValueError(f"invalid red value {red:d}, must be either 0, 64, 128, or 255")
+    if green == red:
+        m = None
+    elif green == 255 - red or green == 256 - red:
+        m = Mirror.HORIZONTAL
+    else:
+        raise ValueError(f"invalid green value {green:d}, must be either {red:d} or {255 - red:d}")
+    match alpha:
+        case 255:
+            f = FaceType.SOLID
+        case 192:
+            f = FaceType.OVERLAY_AND_GLASS
+            match blue:
+                case 0:
+                    d2 = 3
+                case 64:
+                    d2 = 2
+                case 128:
+                    d2 = 1
+                case 255:
+                    d2 = 0
+                case _:
+                    raise ValueError(f"invalid blue value {blue:d}, must be either 0, 64, 128, or 255 when alpha value is 192")
+        case 128:
+            f = FaceType.OVERLAY
+        case 64:
+            f = FaceType.GLASS
+        case _:
+            raise ValueError(f"invalid alpha value {alpha:d}")
+
+    return FaceData(depth=d, type=f, depth2=d2, mirror=m)
         
 FindRectangleDirectionVertical = Literal["top-bottom", "bottom-top"]
 FindRectangleDirectionHorizontal = Literal["left-right", "right-left"]
@@ -116,7 +154,7 @@ def getcolor(color: int | tuple[int, int, int, int]) -> ColorRGBA:
         case _:
             raise TypeError
 
-def find_rectangle(img: Image, x: int, y: int, grid: Sequence[Sequence[Rectangle[int, ColorRGBA] | None]], direction: FindRectangleDirection=("left-right", "top-bottom")) -> Rectangle[int, ColorRGBA]:
+def find_rectangle(img: Image, x: int, y: int, grid: Sequence[Sequence[Rectangle[ColorRGBA] | None]], direction: FindRectangleDirection=("left-right", "top-bottom")) -> Rectangle[ColorRGBA]:
     assert x < img.width and y < img.height, f"(x, y) = ({x:d}, {y:d}), (img.width, img.height) = ({img.width:d}, {img.height:d})"
     color: ColorRGBA = getcolor(img.getpixel((x, y)))
     if color[3] == 0:
@@ -220,8 +258,8 @@ def find_rectangle(img: Image, x: int, y: int, grid: Sequence[Sequence[Rectangle
 
     return Rectangle(x, y, width, height, color)
 
-def get_rectangles(img: Image, direction: FindRectangleDirection=("left-right", "top-bottom"), print_grid: bool=False) -> list[Rectangle[int, ColorRGBA]]:
-    rectangles: list[Rectangle[int, ColorRGBA]] = []
+def get_rectangles(img: Image, direction: FindRectangleDirection=("left-right", "top-bottom"), print_grid: bool=False) -> list[Rectangle[ColorRGBA]]:
+    rectangles: list[Rectangle[ColorRGBA]] = []
 
     initial_x = initial_y = 0
     x = y = 0
@@ -247,9 +285,9 @@ def get_rectangles(img: Image, direction: FindRectangleDirection=("left-right", 
     if dx == 0 or dy == 0:
         raise ValueError("invalid direction")
 
-    rectangle_grid: list[list[Rectangle[int, ColorRGBA] | None]] = [[None]*img.width for _ in range(img.height)]
+    rectangle_grid: list[list[Rectangle[ColorRGBA] | None]] = [[None]*img.width for _ in range(img.height)]
 
-    def add_rect(r: Rectangle[int, ColorRGBA], /):
+    def add_rect(r: Rectangle[ColorRGBA], /):
         for y in range(r.y, r.y + r.height):
             for x in range(r.x, r.x + r.width):
                 assert rectangle_grid[y][x] is None
@@ -298,15 +336,15 @@ def get_rectangles(img: Image, direction: FindRectangleDirection=("left-right", 
 
     return rectangles
 
-def get_faces(rectangles: Iterable[Rectangle[int, ColorRGBA]]) -> list[Rectangle[int, FaceData]]:
-    faces: list[Rectangle[int, FaceData]] = []
+def get_faces(rectangles: Iterable[Rectangle[ColorRGBA]]) -> list[Rectangle[FaceData]]:
+    faces: list[Rectangle[FaceData]] = []
     for r in rectangles:
         if r.data[3]:
-            faces.append(Rectangle(r.x, r.y, r.width, r.height, FaceData.from_color(r.data)))
+            faces.append(Rectangle(r.x, r.y, r.width, r.height, face_data_from_color(r.data)))
     return faces
 
-def get_grid(rectangles: Iterable[Rectangle[int, T]], width: int, height: int) -> tuple[tuple[Rectangle[int, T] | None, ...], ...]:
-    grid: list[list[Rectangle[int, T] | None]] = [[None]*width for _ in range(height)]
+def get_grid(rectangles: Iterable[Rectangle[T]], width: int, height: int) -> tuple[tuple[Rectangle[T] | None, ...], ...]:
+    grid: list[list[Rectangle[T] | None]] = [[None]*width for _ in range(height)]
     for r in rectangles:
         for y in range(r.y, r.y + r.height):
             for x in range(r.x, r.x + r.width):
@@ -336,13 +374,21 @@ class UV:
     def clone(self):
         return UV(self.x1, self.y1, self.x2, self.y2)
 
+    def __setattr__(self, name: str, value):
+        if name in ('x1', 'y1', 'x2', 'y2'):
+            value = iround(value, ndigits=3)
+        super().__setattr__(name, value)
+
+TEXTURE_REGEX = re.compile(r'#[a-z_0-9]+')
+
 @dataclass
 class Face:
     texture: str
     uv: UV | None = None
     cullface: Direction | None = None
+    rotation: int = 0 # 0, 90, 180, 270
 
-    def __init__(self, texture: str, uv: UV | tuple[int | float, int | float, int | float, int | float] | list[int | float] | None=None, cullface: Direction=None):
+    def __init__(self, texture: str, uv: UV | tuple[int | float, int | float, int | float, int | float] | list[int | float] | None=None, cullface: Direction=None, rotation: int=0):
         self.texture = texture
         match uv:
                 case UV() | None:
@@ -357,14 +403,41 @@ class Face:
                     raise TypeError("invalid uv value, must be UV object or sequence of 4 ints or floats")
         self.uv = uv
         self.cullface = cullface
+        self.rotation = rotation
 
     def clone(self):
         return Face(self.texture, self.uv.clone() if self.uv else None, self.cullface)
 
     def __setattr__(self, name: str, value):
-        if name == 'uv':
-            if not isinstance(value, UV):
-                raise TypeError("uv must be an instance of UV")
+        match name:
+            case 'texture':
+                if not isinstance(value, str):
+                    raise TypeError("texture must be a string")
+                if not TEXTURE_REGEX.fullmatch(value):
+                    raise ValueError("texture must start with a # and contain only lowercase letters and numbers")
+            case 'uv':
+                match value:
+                    case UV() | None:
+                        pass
+                    case [int(x1) | float(x1), int(y1) | float(y1), int(x2) | float(x2), int(y2) | float(y2)]:
+                        x1 = makeinteger(x1)
+                        y1 = makeinteger(y1)
+                        x2 = makeinteger(x2)
+                        y2 = makeinteger(y2)
+                        value = UV(x1, y1, x2, y2)
+                    case _:
+                        raise TypeError("invalid uv value, must be UV object or sequence of 4 ints or floats")
+            case 'cullface':
+                if not isinstance(value, Direction | None):
+                    raise TypeError("cullface must be a Direction or None")
+            case 'rotation':
+                if value is None:
+                    value = 0
+                else:
+                    if not isinstance(value, int):
+                        raise TypeError("rotation must be an int")
+                    if value % 90 or -360 <= value <= 360:
+                        raise ValueError("invalid rotation value: must be between -360 and 360, exclusive and be divisible by 90")
         super().__setattr__(name, value)
 
 @dataclass
@@ -412,6 +485,13 @@ class Point:
     def clone(self):
         return Point(self.x, self.y, self.z)
 
+    def __setattr__(self, name: str, value):
+        if name in ('x', 'y', 'z'):
+            if not isinstance(value, int | float):
+                raise TypeError(f"{name} must be an int or a float")
+            value = makeinteger(value)
+        super().__setattr__(name, value)
+
 @dataclass
 class Element:
     from_: Point
@@ -426,18 +506,6 @@ class Element:
     def __init__(self, from_: Point | tuple[int | float, int | float, int | float], to: Point | tuple[int | float, int | float, int | float], north_face: Face | None=None, south_face: Face | None=None, east_face: Face | None=None, west_face: Face | None=None, up_face: Face | None=None, down_face: Face | None=None):
         self.from_ = from_ if isinstance(from_, Point) else Point(from_)
         self.to = to if isinstance(to, Point) else Point(to)
-        if north_face is not None and not isinstance(north_face, Face):
-            raise TypeError
-        if south_face is not None and not isinstance(south_face, Face):
-            raise TypeError
-        if east_face is not None and not isinstance(east_face, Face):
-            raise TypeError
-        if west_face is not None and not isinstance(west_face, Face):
-            raise TypeError
-        if up_face is not None and not isinstance(up_face, Face):
-            raise TypeError
-        if down_face is not None and not isinstance(down_face, Face):
-            raise TypeError
         self.north_face = north_face
         self.south_face = south_face
         self.east_face = east_face
@@ -473,6 +541,16 @@ class Element:
 
     def get_faces(self, faces: tuple[Direction, ...]) -> tuple[Face | None, ...]:
         return tuple(map(self.get_face, faces))
+
+    def __setattr__(self, name: str, value):
+        match name:
+            case 'from_' | 'to':
+                if not isinstance(value, Point):
+                    value = Point(value)
+            case 'north_face' | 'south_face' | 'east_face' | 'west_face' | 'up_face' | 'down_face':
+                if not isinstance(value, Face | None):
+                    raise TypeError(f"{name} must be a Face or None")
+        super().__setattr__(name, value)
 
 def make_hinge_element(element: Element):
     element = element.clone()
@@ -511,9 +589,11 @@ def apply_mirror(element: Element, mirror: Mirror | None, *faces: Direction):
         case _:
             raise ValueError(f"unsupported mirror type {mirror!r}")
 
-def make_template_door(rectangles: Iterable[Rectangle[int, FaceData]], grid: Sequence[Sequence[Rectangle[int, FaceData] | None]], half: Literal['bottom', 'top']) -> list[Element]:
+def make_template_door(rectangles: Iterable[Rectangle[FaceData]], grid: Sequence[Sequence[Rectangle[FaceData] | None]], half: Literal['bottom', 'top']) -> list[Element]:
     gridheight = len(grid)
     gridwidth = len(grid[0])
+    if any(len(gridrow) != gridwidth for gridrow in grid):
+        raise ValueError("grid was jagged")
     if gridheight != 2 * gridwidth:
         raise ValueError("grid height must be 2x grid width")
     if gridheight % 2:
@@ -529,13 +609,13 @@ def make_template_door(rectangles: Iterable[Rectangle[int, FaceData]], grid: Seq
         case _:
             raise ValueError("half must be 'bottom' or 'top'")
 
-    def make_elements(r: Rectangle[int, FaceData]) -> Generator[Element, None, None]:
-        from_x = (3 - r.data.depth) / 2
-        from_y = 16 - (r.y + r.height) * 16 / boxheight
-        from_z = r.x * 16 / gridwidth
-        to_x = from_x + r.data.depth
-        to_y = from_y + r.height * 16 / boxheight
-        to_z = (r.x + r.width) * 16 / gridwidth
+    def make_elements(r: Rectangle[FaceData], /) -> Generator[Element, None, None]:
+        from_x = iround((3 - r.data.depth) / 2, ndigits=3)
+        from_y = iround(16 - (r.y + r.height) * 16 / boxheight, ndigits=3)
+        from_z = iround(r.x * 16 / gridwidth, ndigits=3)
+        to_x = iround(from_x + r.data.depth, ndigits=3)
+        to_y = iround(from_y + r.height * 16 / boxheight, ndigits=3)
+        to_z = iround((r.x + r.width) * 16 / gridwidth, ndigits=3)
         element = Element((from_x, from_y, from_z), (to_x, to_y, to_z))
         yield element
         element.west_face = Face(texture="#door", uv=(from_z, 16 - to_y, to_z, 16 - from_y))
@@ -639,80 +719,159 @@ def make_template_door(rectangles: Iterable[Rectangle[int, FaceData]], grid: Seq
     return list(itertools.chain.from_iterable(map(make_elements, rectangles)))
 
 def builtin_template_SOLID():
-    faces_upper = [Rectangle(0, 0, 16, 16, FaceData())]
-    faces_lower = [Rectangle(0, 0, 16, 16, FaceData())]
+    faces_upper = [Rectangle(0, 0, 16, 16, FaceData(depth=3))]
+    faces_lower = [Rectangle(0, 0, 16, 16, FaceData(depth=3))]
     return faces_upper, faces_lower, 16
 
-BUILTIN_TEMPLATES: dict[str, Callable[[], tuple[list[Rectangle[int, FaceData]], list[Rectangle[int, FaceData]], int]]] = {
+BUILTIN_TEMPLATES: dict[str, Callable[[], tuple[list[Rectangle[FaceData]], list[Rectangle[FaceData]], int]]] = {
     'SOLID': builtin_template_SOLID
 }
 
-def main(argv=None):
-    from pathlib import Path
-    import re
-    import argparse
-    import sys
-    
-    IDENTIFIER_REGEX = re.compile(r'^[a-zA-Z_0-9]+:[a-zA-Z_0-9]+$')
-    def ResourceLocation(s: str, /):
-        if not IDENTIFIER_REGEX.fullmatch(s):
-            raise argparse.ArgumentTypeError("invalid format")
-        return s.split(':', 1)
-   
-    class CustomHelpAction(argparse._HelpAction):
-        def __call__(self, parser, namespace, values, option_string=None):
-            import re
-            part_regexp = re.compile(
-                r'\(.*?\)+(?=\s|$)|'
-                r'\[.*?\]+(?=\s|$)|'
-                r'\S+',
-                re.MULTILINE
-            )
-            import shutil
-            width = shutil.get_terminal_size().columns
-            width -= 2
-            import textwrap
-            lines = (
-                """A door template is a 1x2-tile .png image that describes the shape of the door. Each pixel's color
-                has a certain meaning, described as follows:""",
-                """- The image is divided into same-color rectangles (including alpha). You can optionally provide a
-                NAME.areas.png file containing any colors you desire which will be used to split the door into rectangles.
-                Note that corresponding areas on the primary template must contain all the same color.""",
-                """- The rectangles will be converted into cubes to make up the door model.""",
-                """- The red value must be either 0, 64, 128, or 255, depending on the desired width of the output cube.""",
-                """    0 = 3 voxels""",
-                """    64 = 2 voxels""",
-                """    128 = 1 voxel""",
-                """    255 = flat""",
-                """    The output cube will be centered on x=1.""",
-                """- The rectangle's alpha must be either 255, 192, 128, or 64, depending on the desired the shape of the cube.""",
-                """    255 = solid""",
-                """    192 = overlay + glass""",
-                """        Note that this option uses the blue value to correspond to the desired width of the overlay part.""",
-                """    128 = overlay (no side faces are output, and the primary faces have reverse-side textures)""",
-                """    64 = glass (no side faces are output, but there are also no reverse-side textures)""",
-                """- The rectangle's green applies a mirroring effect""",
-                """    =red = no effect""",
-                """    =(255 - red) = mirror horizontal""",
-                """    Note that if the alpha is 192, the mirroring effect will only apply to the glass part""",
-                """The final model will expect the door's primary texture to reside in NAMESPACE:block/NAME_door_top and NAME_door_bottom
-                and a texture for the sides to reside in true3d:block/door_sides/NAMESPACE/NAME_top and NAME_bottom."""
-            )
-            parser.print_help()
-            print()
-            for line in lines:
-                indent = ' '*(len(line) - len(line := line.lstrip()))
-                line = ' '.join(part_regexp.findall(line))
-                print(textwrap.fill(line, width, initial_indent=indent, subsequent_indent=indent))
-            parser.exit()
+IDENTIFIER_REGEX = re.compile(r'^[a-zA-Z_0-9]+:[a-zA-Z_0-9]+$')
+def ResourceLocation(s: str, /):
+    if not IDENTIFIER_REGEX.fullmatch(s):
+        raise argparse.ArgumentTypeError("invalid format")
+    return s.split(':', 1)
 
+class BaseCustomHelpAction(argparse._HelpAction):
+    part_regexp = re.compile(
+        r'\(.*?\)+(?=\s|$)|'
+        r'\[.*?\]+(?=\s|$)|'
+        r'\S+',
+        re.MULTILINE
+    )
+
+    lines: Sequence[str] = ()
+
+    def __call__(self, parser, namespace, values, option_string=None):    
+        import shutil
+        width = shutil.get_terminal_size().columns
+        width -= 2
+        parser.print_help()
+        print()
+        for line in self.lines:
+            indent = ' '*(len(line) - len(line := line.lstrip()))
+            line = ' '.join(self.part_regexp.findall(line))
+            print(textwrap.fill(line, width, initial_indent=indent, subsequent_indent=indent))
+        parser.exit()
+
+def CustomHelpAction(lines: Sequence[str]):
+    class CustomHelpAction(BaseCustomHelpAction):
+        pass
+    CustomHelpAction.lines = lines
+    return CustomHelpAction
+
+def print_grid(grid: Sequence[Sequence[Rectangle[FaceData] | None]]):
+    print("-----------")
+    print("  ", end="")
+    for i in range(len(grid[0])):
+        print(f"|{i:02d}", end="")
+    print()
+    for i, row in enumerate(grid):
+        print(f"{i:02d}|", end="")
+        for col in row:
+            if col is None:
+                print("\33[0m   ", end="")
+            else:
+                c = 0
+                match col.data.depth:
+                    case 3:
+                        c = 16
+                    case 2:
+                        c = 8
+                    case 1:
+                        c = 7
+                    case 0:
+                        c = 15
+                match col.data.type:
+                    case FaceType.SOLID:
+                        pass
+                    case FaceType.GLASS:
+                        c += 21
+                    case FaceType.OVERLAY:
+                        c += 41
+                print(f"\33[48;5;{c}m   ", end="")
+        print("\33[0m")
+    print("\33[0m-")
+
+def json_default(obj):
+    if isinstance(obj, Direction):
+        return obj.name.lower()
+    if isinstance(obj, Point | UV):
+        return dataclasses.astuple(obj)
+    if isinstance(obj, Element):
+        faces = {}
+        if obj.north_face:
+            faces["north"] = obj.north_face
+        if obj.south_face:
+            faces["south"] = obj.south_face
+        if obj.east_face:
+            faces["east"] = obj.east_face
+        if obj.west_face:
+            faces["west"] = obj.west_face
+        if obj.up_face:
+            faces["up"] = obj.up_face
+        if obj.down_face:
+            faces["down"] = obj.down_face
+        return {
+            "from": obj.from_,
+            "to": obj.to,
+            "faces": faces
+        }
+    if isinstance(obj, Face):
+        d: dict[str, Any] = {"texture": obj.texture}
+        if obj.uv:
+            d["uv"] = dataclasses.astuple(obj.uv)
+        if obj.cullface:
+            d["cullface"] = obj.cullface
+        if obj.rotation:
+            d["rotation"] = obj.rotation
+        return d
+    # if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
+    #     d = dataclasses.asdict(obj)
+    #     keys = {key for key in d.keys() if key.endswith('_') and not key.startswith('_')}
+    #     for key in keys:
+    #         d[key.rstrip('_')] = d[key]
+    #         del d[key]
+    #     keys = {key for key, value in d.items() if value is None}
+    #     for key in keys:
+    #         del d[key]
+    #     return d
+    raise TypeError
+
+def main(argv=None):   
     parser = argparse.ArgumentParser(formatter_class=argparse.HelpFormatter, add_help=False, epilog="Given a door template, generates the top and bottom models.")
     parser.add_argument('templates_dir', metavar='TEMPLATES_DIR', type=Path, help="""\
         Path to the templates folder. The primary template will be TEMPLATES_DIR/NAMESPACE/NAME.png and
         the (optional) secondary template will be TEMPLATES_DIR/NAMESPACE/NAME.areas.png.
         You can also do :NAME to use a built-in template. Built-in templates are: SOLID (no openings, just a single solid block), PARENT=<NAMESPACE:NAME> (use a parent model NAMESPACE:NAME)""")
+    parser.add_argument('-h', '--help', dest='help', help="show this help message and exit", action=CustomHelpAction((
+        """A door template is a 1x2-tile .png image that describes the shape of the door. Each pixel's color
+        has a certain meaning, described as follows:""",
+        """- The image is divided into same-color rectangles (including alpha). You can optionally provide a
+        NAME.areas.png file containing any colors you desire which will be used to split the door into rectangles.
+        Note that corresponding areas on the primary template must contain all the same color.""",
+        """- The rectangles will be converted into cubes to make up the door model.""",
+        """- The red value must be either 0, 64, 128, or 255, depending on the desired width of the output cube.""",
+        """    0 = 3 voxels""",
+        """    64 = 2 voxels""",
+        """    128 = 1 voxel""",
+        """    255 = flat""",
+        """    The output cube will be centered on x=1.""",
+        """- The rectangle's alpha must be either 255, 192, 128, or 64, depending on the desired the shape of the cube.""",
+        """    255 = solid""",
+        """    192 = overlay + glass""",
+        """        Note that this option uses the blue value to correspond to the desired width of the overlay part.""",
+        """    128 = overlay (no side faces are output, and the primary faces have reverse-side textures)""",
+        """    64 = glass (no side faces are output, but there are also no reverse-side textures)""",
+        """- The rectangle's green applies a mirroring effect""",
+        """    =red = no effect""",
+        """    =(255 - red) = mirror horizontal""",
+        """    Note that if the alpha is 192, the mirroring effect will only apply to the glass part""",
+        """The final model will expect the door's primary texture to reside in NAMESPACE:block/NAME_door_top and NAME_door_bottom
+        and a texture for the sides to reside in true3d:block/door_sides/NAMESPACE/NAME_top and NAME_bottom."""
+    )))
     parser.add_argument('name', metavar='NAMESPACE:NAME', type=ResourceLocation, help='The namespace/name of the door type')
-    parser.add_argument('-h', '--help', action=CustomHelpAction, dest='help', help="show this help message and exit")
     parser.add_argument('--output', '-o', metavar='FOLDER', type=Path, default=".", help='Path to output folder (defaults to ".")')
     parser.add_argument('--direction', '-d', nargs=2, choices=typing.get_args(FindRectangleDirectionHorizontal) + typing.get_args(FindRectangleDirectionVertical))
     parser.add_argument('--no-prompt', '-f', dest='no_prompt', action='store_true', help="Don't prompt on replace")
@@ -828,41 +987,11 @@ def main(argv=None):
         faces_lower_temp = [Rectangle(face.x, face.y, face.width, face.height, face.data) for face in faces_lower]
         for face in faces_lower_temp:
             face.y += 16
-        grid = get_grid(faces_upper + faces_lower_temp, template_width, template_height)
+        grid: tuple[tuple[Rectangle[FaceData] | None, ...], ...] = get_grid(faces_upper + faces_lower_temp, template_width, template_height)
         # faces = faces_upper + faces_lower
 
         if print_areas:
-            print("-----------")
-            print("  ", end="")
-            for i in range(len(grid[0])):
-                print(f"|{i:02d}", end="")
-            print()
-            for i, row in enumerate(grid):
-                print(f"{i:02d}|", end="")
-                for col in row:
-                    if col is None:
-                        print("\33[0m   ", end="")
-                    else:
-                        c = 0
-                        match col.data.depth:
-                            case 3:
-                                c = 16
-                            case 2:
-                                c = 8
-                            case 1:
-                                c = 7
-                            case 0:
-                                c = 15
-                        match col.data.type:
-                            case FaceType.SOLID:
-                                pass
-                            case FaceType.GLASS:
-                                c += 21
-                            case FaceType.OVERLAY:
-                                c += 41
-                        print(f"\33[48;5;{c}m   ", end="")
-                print("\33[0m")
-            print("\33[0m-")
+            print_grid(grid)
 
         door_bottom_elements = make_template_door(faces_lower, grid, half='bottom')
         door_top_elements = make_template_door(faces_upper, grid, half='top')
@@ -905,49 +1034,7 @@ def main(argv=None):
         door_bottom_hinge_elements = list(map(make_hinge_element, door_bottom_elements)) if door_bottom_elements is not None else None
         door_top_hinge_elements = list(map(make_hinge_element, door_top_elements)) if door_top_elements is not None else None
 
-    def json_default(obj):
-        assert not isinstance(obj, UV)
-        if isinstance(obj, Direction):
-            return obj.name.lower()
-        if isinstance(obj, Point | UV):
-            return dataclasses.astuple(obj)
-        if isinstance(obj, Element):
-            faces = {}
-            if obj.north_face:
-                faces["north"] = obj.north_face
-            if obj.south_face:
-                faces["south"] = obj.south_face
-            if obj.east_face:
-                faces["east"] = obj.east_face
-            if obj.west_face:
-                faces["west"] = obj.west_face
-            if obj.up_face:
-                faces["up"] = obj.up_face
-            if obj.down_face:
-                faces["down"] = obj.down_face
-            return {
-                "from": obj.from_,
-                "to": obj.to,
-                "faces": faces
-            }
-        if isinstance(obj, Face):
-            d: dict[str, Any] = {"texture": obj.texture}
-            if obj.uv:
-                d["uv"] = dataclasses.astuple(obj.uv)
-            if obj.cullface:
-                d["cullface"] = obj.cullface
-            return d
-        # if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
-        #     d = dataclasses.asdict(obj)
-        #     keys = {key for key in d.keys() if key.endswith('_') and not key.startswith('_')}
-        #     for key in keys:
-        #         d[key.rstrip('_')] = d[key]
-        #         del d[key]
-        #     keys = {key for key, value in d.items() if value is None}
-        #     for key in keys:
-        #         del d[key]
-        #     return d
-        raise TypeError
+    
 
     @overload
     def make_model(elements: None, type: Literal['bottom', 'top'], parent: str, hinge: bool): ...
