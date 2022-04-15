@@ -1,5 +1,5 @@
 {
-    "parent": "block/template_powered_rail_flat",
+    "parent": "true3d:block/template_powered_rail_flat",
     "textures": {
         "rail": "block/powered_rail"
     }

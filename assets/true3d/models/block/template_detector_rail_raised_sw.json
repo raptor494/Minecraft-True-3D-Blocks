@@ -1,0 +1,204 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "block/detector_rail",
+		"rail": "block/detector_rail"
+	},
+	"elements": [
+		{
+			"name": "right rail",
+			"from": [12, 0.75, 8],
+			"to": [14, 17.5, 8.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 9.5, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [12, 0, 14, 16], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [13, 0, 14, 16], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [12, 0, 14, 16], "texture": "#rail"},
+				"west": {"uv": [12, 0, 13, 16], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [12, 15, 14, 16], "texture": "#rail"},
+				"down": {"uv": [12, 0, 14, 1], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "left rail",
+			"from": [2, 0.75, 8],
+			"to": [4, 17.5, 8.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 9.5, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [2, 0, 4, 16], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [3, 0, 4, 16], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [2, 0, 4, 16], "texture": "#rail"},
+				"west": {"uv": [2, 0, 3, 16], "texture": "#rail"},
+				"up": {"uv": [2, 15, 4, 16], "texture": "#rail"},
+				"down": {"uv": [2, 0, 4, 1], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "detector",
+			"from": [5, 7.5, 2.25],
+			"to": [11, 12, 3],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 4.5, 2], "rescale": true},
+			"faces": {
+				"north": {"uv": [5, 5, 11, 11], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [10, 5, 11, 11], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [5, 5, 12, 11], "texture": "#rail"},
+				"west": {"uv": [5, 5, 6, 11], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [5, 10, 11, 11], "texture": "#rail"},
+				"down": {"uv": [5, 5, 11, 6], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "top tie left",
+			"from": [1, 2, -3],
+			"to": [4, 4, -2.25],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, -2.25, -3.25], "rescale": true},
+			"faces": {
+				"north": {"uv": [1, 1, 2, 3], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [1, 1, 2, 3], "rotation": 180, "texture": "#rail"},
+				"west": {"uv": [1, 1, 2, 3], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [1, 2, 2, 3], "texture": "#rail"},
+				"down": {"uv": [1, 1, 2, 2], "rotation": 180, "texture": "#rail"}
+			}
+		},
+		{
+			"name": "top tie middle",
+			"from": [4, 2, -3],
+			"to": [12, 4, -2.25],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, -2.25, -3.25], "rescale": true},
+			"faces": {
+				"north": {"uv": [4, 1, 12, 3], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [12, 1, 4, 3], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [4, 2, 12, 3], "texture": "#rail"},
+				"down": {"uv": [4, 1, 12, 2], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "top tie right",
+			"from": [12, 2, -3],
+			"to": [15, 4, -2.25],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, -2.25, -3.25], "rescale": true},
+			"faces": {
+				"north": {"uv": [14, 1, 15, 3], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [14, 1, 15, 3], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [14, 1, 15, 3], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [14, 2, 15, 3], "texture": "#rail"},
+				"down": {"uv": [14, 1, 15, 2], "rotation": 180, "texture": "#rail"}
+			}
+		},
+		{
+			"name": "top mdl tie left",
+			"from": [1, 6, 1],
+			"to": [4, 8, 1.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 1.75, 0.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [1, 5, 2, 7], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [1, 5, 2, 7], "rotation": 180, "texture": "#rail"},
+				"west": {"uv": [1, 5, 2, 7], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [1, 6, 2, 7], "texture": "#rail"},
+				"down": {"uv": [1, 5, 2, 6], "rotation": 180, "texture": "#rail"}
+			}
+		},
+		{
+			"name": "top mdl tie middle",
+			"from": [4, 6, 1],
+			"to": [12, 8, 1.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 1.75, 0.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [4, 1, 12, 3], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [12, 1, 4, 3], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [4, 2, 12, 3], "texture": "#rail"},
+				"down": {"uv": [4, 1, 12, 2], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "top mdl tie right",
+			"from": [12, 6, 1],
+			"to": [15, 8, 1.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 1.75, 0.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [14, 5, 15, 7], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [14, 5, 15, 7], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [14, 5, 15, 7], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [14, 6, 15, 7], "texture": "#rail"},
+				"down": {"uv": [14, 5, 15, 6], "rotation": 180, "texture": "#rail"}
+			}
+		},
+		{
+			"name": "btm mdl tie left",
+			"from": [1, 10, 5],
+			"to": [4, 12, 5.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-15, 5.75, 4.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [1, 9, 2, 11], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [1, 9, 2, 11], "rotation": 180, "texture": "#rail"},
+				"west": {"uv": [1, 9, 2, 11], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [1, 10, 2, 11], "texture": "#rail"},
+				"down": {"uv": [1, 9, 2, 10], "rotation": 180, "texture": "#rail"}
+			}
+		},
+		{
+			"name": "btm mdl tie middle",
+			"from": [4, 10, 5],
+			"to": [12, 12, 5.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 5.75, 4.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [4, 13, 12, 15], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [12, 13, 4, 15], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [4, 14, 12, 15], "texture": "#rail"},
+				"down": {"uv": [4, 13, 12, 14], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "btm mdl tie right",
+			"from": [12, 10, 5],
+			"to": [15, 12, 5.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 5.75, 4.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [14, 9, 15, 11], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [14, 9, 15, 11], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [14, 9, 15, 11], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [14, 10, 15, 11], "texture": "#rail"},
+				"down": {"uv": [14, 9, 15, 10], "rotation": 180, "texture": "#rail"}
+			}
+		},
+		{
+			"name": "btm tie left",
+			"from": [1, 14, 9],
+			"to": [4, 16, 9.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 9.75, 8.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [1, 13, 2, 15], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [1, 13, 2, 15], "rotation": 180, "texture": "#rail"},
+				"west": {"uv": [1, 13, 2, 15], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [1, 14, 2, 15], "texture": "#rail"},
+				"down": {"uv": [1, 13, 2, 14], "rotation": 180, "texture": "#rail"}
+			}
+		},
+		{
+			"name": "btm tie middle",
+			"from": [4, 14, 9],
+			"to": [12, 16, 9.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 9.75, 8.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [4, 13, 12, 15], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [12, 13, 4, 15], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [4, 14, 12, 15], "texture": "#rail"},
+				"down": {"uv": [4, 13, 12, 14], "texture": "#rail"}
+			}
+		},
+		{
+			"name": "btm tie right",
+			"from": [12, 14, 9],
+			"to": [15, 16, 9.75],
+			"rotation": {"angle": 45, "axis": "x", "origin": [-2, 9.75, 8.75], "rescale": true},
+			"faces": {
+				"north": {"uv": [14, 13, 15, 15], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [14, 13, 15, 15], "rotation": 180, "texture": "#rail"},
+				"south": {"uv": [14, 13, 15, 15], "rotation": 180, "texture": "#rail"},
+				"up": {"uv": [14, 14, 15, 15], "texture": "#rail"},
+				"down": {"uv": [14, 13, 15, 14], "rotation": 180, "texture": "#rail"}
+			}
+		}
+	]
+}

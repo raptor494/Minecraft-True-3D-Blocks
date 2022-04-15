@@ -1,0 +1,6 @@
+{
+	"parent": "true3d:block/template_detector_rail_flat",
+	"textures": {
+		"rail": "moreminecarts:block/white_detector"
+	}
+}

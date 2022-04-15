@@ -1,0 +1,6 @@
+{
+    "parent": "true3d:block/template_detector_rail_raised_ne",
+    "textures": {
+        "rail": "block/detector_rail"
+    }
+}

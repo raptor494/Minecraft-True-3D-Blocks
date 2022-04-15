@@ -1,0 +1,6 @@
+{
+	"parent": "true3d:block/template_powered_rail_raised_ne",
+	"textures": {
+		"rail": "thermal:block/lumium_powered_rail"
+	}
+}

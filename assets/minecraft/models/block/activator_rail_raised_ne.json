@@ -1,0 +1,6 @@
+{
+    "parent": "true3d:block/template_activator_rail_raised_ne",
+    "textures": {
+        "rail": "block/activator_rail"
+    }
+}
