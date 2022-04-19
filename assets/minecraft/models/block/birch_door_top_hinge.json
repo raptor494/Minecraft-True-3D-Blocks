@@ -4,7 +4,7 @@
 	"textures": {
 		"door": "block/birch_door_top",
 		"sides": "true3d:block/door_sides/minecraft/birch_top",
-		"particle": ""
+		"particle": "#door"
 	},
 	"elements": [
 		{
